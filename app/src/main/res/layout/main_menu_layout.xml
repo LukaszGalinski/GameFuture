@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageButton
+        android:id="@+id/menu_toggle_btn"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/toggle_icon_height"
+        android:src="@android:drawable/ic_menu_sort_by_size"
+        android:contentDescription="@string/toggle_menu"
+        android:background="@android:color/transparent"
+        app:layout_constraintWidth_percent="0.15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <SearchView
+        android:id="@+id/menu_search_bar"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/search_bar_height"
+        app:layout_constraintWidth_percent="0.7"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/menu_favourites"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/favourite_icon_height"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/favourites"
+        android:src="@android:drawable/btn_star_big_on"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.15"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/menu_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/menu_default_margin"
+        app:layout_constraintHeight_percent="0.9"
+        app:layout_constraintTop_toBottomOf="@id/menu_search_bar"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
