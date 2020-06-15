@@ -3,4 +3,12 @@
     <string name="toggle_menu">Menu Toggle</string>
     <string name="favourites">Favourites</string>
     <string name="game_image">Game Image</string>
+
+    <string name="loading_starting">Starting loading the data</string>
+    <string name="loading_finished">Finished loading the data</string>
+    <string name="data_parsing_error">Json parsing error: </string>
+    <string name="loading_malformedException">MalformedURLException: </string>
+    <string name="loading_protocolException">"ProtocolException: </string>
+    <string name="loading_ioException">IOException: </string>
+    <string name="loading_exception">Exception: </string>
 </resources>

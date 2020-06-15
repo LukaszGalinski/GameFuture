@@ -9,7 +9,7 @@
         android:id="@+id/row_image"
         android:layout_width="0dp"
         android:layout_height="150dp"
-        android:layout_margin="25dp"
+        android:layout_margin="@dimen/menu_default_margin"
         android:background="@color/colorAccent"
         android:contentDescription="@string/game_image"
         app:layout_constraintWidth_percent="0.8"
