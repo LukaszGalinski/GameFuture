@@ -11,4 +11,5 @@
     <string name="loading_protocolException">"ProtocolException: </string>
     <string name="loading_ioException">IOException: </string>
     <string name="loading_exception">Exception: </string>
+    <string name="loading_information">Loading the data. It may take a while&#8230;</string>
 </resources>

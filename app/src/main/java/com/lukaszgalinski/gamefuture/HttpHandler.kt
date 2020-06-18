@@ -1,7 +1,6 @@
 package com.lukaszgalinski.gamefuture
 
 import android.content.Context
-import android.util.Base64
 import android.util.Log
 import java.io.*
 import java.net.HttpURLConnection
@@ -11,7 +10,6 @@ import java.net.URL
 
 private const val TAG: String = "HttpHandler:"
 private const val GET_METHOD = "GET"
-private const val CODING_SYSTEM = "UTF-8"
 class HttpHandler(private val context: Context){
 
     fun makeServiceCall(reqUrl: String): String{
@@ -52,11 +50,6 @@ class HttpHandler(private val context: Context){
             }
         }
 
-        return decodeData(sb)
-    }
-
-    private fun decodeData(stringBuilder: StringBuilder): String{
-        val data = Base64.decode(stringBuilder.toString(), Base64.DEFAULT)
-        return String(data, charset(CODING_SYSTEM))
+        return sb.toString()
     }
 }

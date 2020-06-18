@@ -6,4 +6,5 @@
     <dimen name="favourite_icon_width">50dp</dimen>
     <dimen name="favourite_icon_height">50dp</dimen>
     <dimen name="menu_default_margin">10dp</dimen>
+    <dimen name="footer_height">30dp</dimen>
 </resources>
