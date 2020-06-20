@@ -5,12 +5,9 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.AsyncTask
 import android.os.Bundle
-import android.os.SystemClock
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,11 +16,8 @@ import kotlinx.android.synthetic.main.main_menu_layout.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import org.w3c.dom.Text
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.concurrent.thread
 
 private const val TAG: String = "MainMenuActivity "
 private const val URL = "https://raw.githubusercontent.com/LukaszGalinski/GameFuture/master/gameFuture.json"
@@ -33,9 +27,10 @@ private const val DESCRIPTION_LABEL = "description"
 private const val PHOTO_URL_LABEL = "photoUrl"
 private const val SPAN_COUNT_PORTRAIT = 2
 private const val SPAN_COUNT_LANDSCAPE = 3
-private const val DATE_AND_TIME_FORMAT = "dd/M/yyyy hh:mm:ss"
 private const val LAST_SYNCHRONIZATION_DATE_LABEL = "lastDate"
-private const val DEFAULT_UPDATE_TIME = 7*24*60*60  //week
+private const val DEFAULT_UPDATE_TIME = 7*24*60*60 //week
+private const val MILLISECOND_IN_SECOND = 1000
+private const val PROGRESS_BAR_MAX_VALUE = 100
 private val arrayList = ArrayList<GamesData?>()
 lateinit var adapter: GamesListAdapter
 private lateinit var progressBar: ProgressBar
@@ -45,14 +40,15 @@ class MainMenuActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_menu_layout)
         progressBar = findViewById(R.id.games_progressBar)
-        if (2132132132132> DEFAULT_UPDATE_TIME) {
+        if (getTimeDifference() > DEFAULT_UPDATE_TIME) {
             val date1 = Calendar.getInstance().time
             writeToSharedPreferences(date1.time)
             GetGames(this).execute()
-            //save into sqllite
-        } else {
-            println("A tu przerwa jest krotsza")
-          //  download from sqlite
+        } else { 
+            val newArray = SQLiteDatabaseHelper(this).loadGamesDataFromTheDatabase()
+            newArray.forEachIndexed { index, _ ->
+                arrayList.add(newArray[index])
+            }
         }
         showData(arrayList)
     }
@@ -64,6 +60,7 @@ class MainMenuActivity: AppCompatActivity() {
         menu_recycler.apply {
             layoutManager = mLayoutManager
         }
+        adapter.notifyDataSetChanged()
     }
 
     private fun getSpanValueDependingOnScreenOrientation(): Int {
@@ -78,7 +75,7 @@ class MainMenuActivity: AppCompatActivity() {
     private fun getTimeDifference(): Long {
         val date1 = Calendar.getInstance().time
         val date2 = readFromSharedPreferences(date1.time)
-        return (date1.time - date2)/1000
+        return (date1.time - date2)/ MILLISECOND_IN_SECOND
     }
 
     private fun writeToSharedPreferences(time: Long){
@@ -112,7 +109,6 @@ class GetGames(private val context: Context): AsyncTask<Void, Void, Void>() {
         } catch (e: JSONException) {
             Log.e(TAG, context.resources.getString(R.string.data_parsing_error) + e.message)
         }
-
         return null
     }
 
@@ -121,16 +117,15 @@ class GetGames(private val context: Context): AsyncTask<Void, Void, Void>() {
         Toast.makeText(context, context.resources.getString(R.string.loading_finished), Toast.LENGTH_LONG).show()
         progressBar.visibility = View.GONE
         adapter.notifyDataSetChanged()
+        SQLiteDatabaseHelper(context).saveGamesDataIntoTheDatabase(arrayList)
     }
 
     private fun getDataFromJsonFile(gamesArray: JSONArray) {
-        val incrementValue = 100/gamesArray.length()
+        val incrementValue = PROGRESS_BAR_MAX_VALUE/gamesArray.length()
         var currentProgress = 0
         for (i in 0 until gamesArray.length()) {
             currentProgress+=incrementValue
-            progressBar.incrementProgressBy(100/gamesArray.length())
-            progressBar.setProgress(currentProgress)
-
+            progressBar.progress = currentProgress
             val currentGame: JSONObject = gamesArray.getJSONObject(i)
             val name = currentGame.getString(NAME_LABEL)
             val description = currentGame.getString(DESCRIPTION_LABEL)
