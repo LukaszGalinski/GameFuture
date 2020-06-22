@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,22 +28,24 @@ private const val DESCRIPTION_LABEL = "description"
 private const val PHOTO_URL_LABEL = "photoUrl"
 private const val SPAN_COUNT_PORTRAIT = 2
 private const val SPAN_COUNT_LANDSCAPE = 3
-private const val LAST_SYNCHRONIZATION_DATE_LABEL = "lastDate"
+private const val LAST_UPDATE_TIME_LABEL = "lastDate"
 private const val DEFAULT_UPDATE_TIME = 7*24*60*60 //week
 private const val MILLISECOND_IN_SECOND = 1000
 private const val PROGRESS_BAR_MAX_VALUE = 100
 private val arrayList = ArrayList<GamesData?>()
 lateinit var adapter: GamesListAdapter
 private lateinit var progressBar: ProgressBar
+private lateinit var loadingInfoTextView: TextView
 
 class MainMenuActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_menu_layout)
         progressBar = findViewById(R.id.games_progressBar)
+        loadingInfoTextView = findViewById(R.id.loadingInformation)
         if (getTimeDifference() > DEFAULT_UPDATE_TIME) {
             val date1 = Calendar.getInstance().time
-            writeToSharedPreferences(date1.time)
+            writeUpdateTimeToSharedPreferences(date1.time)
             GetGames(this).execute()
         } else { 
             val newArray = SQLiteDatabaseHelper(this).loadGamesDataFromTheDatabase()
@@ -74,20 +77,20 @@ class MainMenuActivity: AppCompatActivity() {
 
     private fun getTimeDifference(): Long {
         val date1 = Calendar.getInstance().time
-        val date2 = readFromSharedPreferences(date1.time)
+        val date2 = readUpdateTimeFromSharedPreferences(date1.time)
         return (date1.time - date2)/ MILLISECOND_IN_SECOND
     }
 
-    private fun writeToSharedPreferences(time: Long){
+    private fun writeUpdateTimeToSharedPreferences(time: Long){
         val sharedPreferences = this.getPreferences(Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.putLong(LAST_SYNCHRONIZATION_DATE_LABEL, time)
+        editor.putLong(LAST_UPDATE_TIME_LABEL, time)
         editor.apply()
     }
 
-    private fun readFromSharedPreferences(time: Long): Long {
+    private fun readUpdateTimeFromSharedPreferences(time: Long): Long {
         val sharedPreferences: SharedPreferences = this.getPreferences(Context.MODE_PRIVATE)
-        return sharedPreferences.getLong(LAST_SYNCHRONIZATION_DATE_LABEL, time)
+        return sharedPreferences.getLong(LAST_UPDATE_TIME_LABEL, time)
     }
 }
 
@@ -95,6 +98,7 @@ class GetGames(private val context: Context): AsyncTask<Void, Void, Void>() {
     override fun onPreExecute() {
         super.onPreExecute()
         progressBar.visibility = View.VISIBLE
+        loadingInfoTextView.visibility = View.VISIBLE
         Toast.makeText(context, context.resources.getString(R.string.loading_starting), Toast.LENGTH_LONG).show()
     }
 
@@ -116,6 +120,7 @@ class GetGames(private val context: Context): AsyncTask<Void, Void, Void>() {
         super.onPostExecute(result)
         Toast.makeText(context, context.resources.getString(R.string.loading_finished), Toast.LENGTH_LONG).show()
         progressBar.visibility = View.GONE
+        loadingInfoTextView.visibility = View.GONE
         adapter.notifyDataSetChanged()
         SQLiteDatabaseHelper(context).saveGamesDataIntoTheDatabase(arrayList)
     }

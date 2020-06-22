@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">GameFuture</string>
+    <string name="app_logo">Logo</string>
     <string name="toggle_menu">Menu Toggle</string>
     <string name="favourites">Favourites</string>
     <string name="game_image">Game Image</string>
+    <string name="splash_text">GameFuture \n\n From <![CDATA[<font color=#6200EE>Gamers </font>]]>For <![CDATA[<font color=#6200EE>Gamers</font>]]></string>
 
     <string name="loading_starting">Starting loading the data</string>
     <string name="loading_finished">Finished loading the data</string>
