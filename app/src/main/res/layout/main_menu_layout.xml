@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/halfTransparent"
+    android:background="@android:color/black"
     >
 
     <ImageButton
@@ -45,6 +45,7 @@
         android:id="@+id/menu_recycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@android:color/transparent"
         android:layout_marginTop="@dimen/menu_default_margin"
         app:layout_constraintHeight_percent=".8"
         app:layout_constraintTop_toBottomOf="@id/menu_search_bar"/>
@@ -67,6 +68,7 @@
         android:padding="@dimen/menu_default_margin"
         android:textColor="@android:color/white"
         android:textSize="16sp"
+        android:visibility="gone"
         android:gravity="center_horizontal"
         android:text="@string/loading_information"
         app:layout_constraintTop_toBottomOf="@id/games_progressBar"/>

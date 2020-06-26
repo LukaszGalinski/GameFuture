@@ -1,12 +1,15 @@
 package com.lukaszgalinski.gamefuture
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.splash_screen.*
 import java.util.*
 
-private const val SPLASH_SCREEN_DEFAULT_TIME = 5000L
+private const val SPLASH_SCREEN_DEFAULT_TIME = 3000L
 private val screenChangeHandler = Handler()
 private var timeLeft: Long = 0
 private var startTime: Long = 0
@@ -16,13 +19,24 @@ class SplashScreenActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen)
         timeLeft = savedInstanceState?.getLong(TIME_LEFT_LABEL) ?: SPLASH_SCREEN_DEFAULT_TIME
+        setShadowOnTextButton(splash_skip)
+    }
+
+    private fun setShadowOnTextButton(button: Button){
+        button.setShadowLayer(24f, 4f, 4f, Color.BLACK)
+        button.setOnClickListener { activityClean() }
     }
 
     private fun changeScreenTask(timePeriod: Long) {
         screenChangeHandler.postDelayed({
-            finish()
-            startActivity(Intent(this, MainMenuActivity::class.java))
+            activityClean()
         }, timePeriod)
+    }
+
+    private fun activityClean(){
+        finish()
+        startActivity(Intent(this, MainMenuActivity::class.java))
+        screenChangeHandler.removeCallbacksAndMessages(null)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

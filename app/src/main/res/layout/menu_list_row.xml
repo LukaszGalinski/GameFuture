@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/border">
+    app:cardElevation="13dp"
+    android:background="@android:color/transparent"
+    app:cardCornerRadius="13dp"
+    android:layout_marginTop="1dp">
 
-    <ImageView
-        android:id="@+id/row_image"
-        android:layout_width="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_height="175dp"
-        android:scaleType="fitXY"
-        android:contentDescription="@string/game_image"
-        app:layout_constraintWidth_percent="0.9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/text1"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center_horizontal"
-        android:paddingBottom="10dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/row_image"
-        app:layout_constraintTop_toBottomOf="@id/row_image" />
+        android:background="@android:color/transparent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/row_image"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:background="@drawable/border"
+            android:contentDescription="@string/game_image"
+            android:scaleType="centerCrop"
+            app:layout_constraintWidth_percent="0.4"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:background="@color/halfTransparent"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintWidth_percent="0.6"
+            app:layout_constraintStart_toEndOf="@+id/row_image"
+            app:layout_constraintTop_toTopOf="@+id/row_image" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

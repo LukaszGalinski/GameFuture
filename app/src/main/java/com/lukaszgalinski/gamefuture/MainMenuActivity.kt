@@ -26,8 +26,8 @@ private const val JSON_ARRAY_LABEL = "games"
 private const val NAME_LABEL = "name"
 private const val DESCRIPTION_LABEL = "description"
 private const val PHOTO_URL_LABEL = "photoUrl"
-private const val SPAN_COUNT_PORTRAIT = 2
-private const val SPAN_COUNT_LANDSCAPE = 3
+private const val SPAN_COUNT_PORTRAIT = 1
+private const val SPAN_COUNT_LANDSCAPE = 2
 private const val LAST_UPDATE_TIME_LABEL = "lastDate"
 private const val DEFAULT_UPDATE_TIME = 7*24*60*60 //week
 private const val MILLISECOND_IN_SECOND = 1000
@@ -43,7 +43,7 @@ class MainMenuActivity: AppCompatActivity() {
         setContentView(R.layout.main_menu_layout)
         progressBar = findViewById(R.id.games_progressBar)
         loadingInfoTextView = findViewById(R.id.loadingInformation)
-        if (getTimeDifference() > DEFAULT_UPDATE_TIME) {
+        if (188787878787 > DEFAULT_UPDATE_TIME) {
             val date1 = Calendar.getInstance().time
             writeUpdateTimeToSharedPreferences(date1.time)
             GetGames(this).execute()

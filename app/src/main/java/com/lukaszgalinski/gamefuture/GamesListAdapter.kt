@@ -31,6 +31,7 @@ class GamesListAdapter(private val context: Context, private val gamesList: List
     override fun onBindViewHolder(holder: GamesViewHolder, position: Int) {
         holder.name.text = gamesList[position]?.name
         holder.image.setImageBitmap(decodeImage(gamesList[position]?.photoUrl))
+        holder.image.clipToOutline = true
     }
 
     private fun decodeImage(photoUrl: String?): Bitmap{
