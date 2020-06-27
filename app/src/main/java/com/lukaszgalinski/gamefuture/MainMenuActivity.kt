@@ -1,16 +1,23 @@
 package com.lukaszgalinski.gamefuture
 
+import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.media.Image
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.view.Window
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.main_menu_layout.*
@@ -26,8 +33,8 @@ private const val JSON_ARRAY_LABEL = "games"
 private const val NAME_LABEL = "name"
 private const val DESCRIPTION_LABEL = "description"
 private const val PHOTO_URL_LABEL = "photoUrl"
-private const val SPAN_COUNT_PORTRAIT = 1
-private const val SPAN_COUNT_LANDSCAPE = 2
+private const val SPAN_COUNT_PORTRAIT = 2
+private const val SPAN_COUNT_LANDSCAPE = 3
 private const val LAST_UPDATE_TIME_LABEL = "lastDate"
 private const val DEFAULT_UPDATE_TIME = 7*24*60*60 //week
 private const val MILLISECOND_IN_SECOND = 1000
@@ -43,27 +50,56 @@ class MainMenuActivity: AppCompatActivity() {
         setContentView(R.layout.main_menu_layout)
         progressBar = findViewById(R.id.games_progressBar)
         loadingInfoTextView = findViewById(R.id.loadingInformation)
-        if (188787878787 > DEFAULT_UPDATE_TIME) {
+
+        if (getTimeDifference() > DEFAULT_UPDATE_TIME) {
             val date1 = Calendar.getInstance().time
             writeUpdateTimeToSharedPreferences(date1.time)
             GetGames(this).execute()
         } else { 
             val newArray = SQLiteDatabaseHelper(this).loadGamesDataFromTheDatabase()
+            arrayList.clear()
             newArray.forEachIndexed { index, _ ->
                 arrayList.add(newArray[index])
             }
         }
-        showData(arrayList)
+        recyclerAdapterSet(arrayList)
     }
 
-    private fun showData(arrayList: ArrayList<GamesData?>) { 
+    private fun recyclerAdapterSet(arrayList: ArrayList<GamesData?>) {
         adapter = GamesListAdapter(this, arrayList)
-        val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(this, getSpanValueDependingOnScreenOrientation())
+        val mLayoutManager: RecyclerView.LayoutManager =
+            GridLayoutManager(this, getSpanValueDependingOnScreenOrientation())
         menu_recycler.adapter = adapter
         menu_recycler.apply {
             layoutManager = mLayoutManager
         }
         adapter.notifyDataSetChanged()
+        adapter.setOnItemClickListener(object: OnItemClickListener{
+            override fun onRecyclerItemPressed(position: Int) {
+                showAlertWithData(arrayList[position])
+            }
+        })
+    }
+
+    private fun showAlertWithData(item: GamesData?){
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setContentView(R.layout.main_menu_game_alert)
+        dialog.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        val imageView = dialog.findViewById<ImageView>(R.id.row_image)
+        imageView.setImageBitmap(decodeImage(item?.photoUrl))
+        val title = dialog.findViewById<TextView>(R.id.alert_title)
+        title.text = item?.name
+        val moveForwardButton = dialog.findViewById<Button>(R.id.alert_move_forward)
+        moveForwardButton.setShadowLayer(20f,5f, 5f, Color.BLACK)
+
+        moveForwardButton.setOnClickListener {
+            Toast.makeText(this, "It Works. To be continued...", Toast.LENGTH_SHORT).show()
+        }
+
+        dialog.show()
     }
 
     private fun getSpanValueDependingOnScreenOrientation(): Int {
@@ -140,6 +176,3 @@ class GetGames(private val context: Context): AsyncTask<Void, Void, Void>() {
         }
     }
 }
-
-
-

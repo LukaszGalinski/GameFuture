@@ -4,40 +4,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="13dp"
-    android:background="@android:color/transparent"
-    app:cardCornerRadius="13dp"
-    android:layout_marginTop="1dp">
+    app:cardElevation="@dimen/menu_recycler_elevation"
+    app:cardCornerRadius="@dimen/menu_recycler_radius"
+    app:cardBackgroundColor="@android:color/transparent"
+    android:layout_marginTop="@dimen/menu_recycler_marginTop">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/row_image"
             android:layout_width="0dp"
-            android:layout_height="200dp"
+            android:layout_height="@dimen/menu_recycler_image_height"
             android:background="@drawable/border"
             android:contentDescription="@string/game_image"
             android:scaleType="centerCrop"
-            app:layout_constraintWidth_percent="0.4"
+            app:layout_constraintWidth_percent="0.9"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
             android:id="@+id/text1"
             android:layout_width="0dp"
-            android:layout_height="150dp"
-            android:background="@color/halfTransparent"
+            android:layout_height="wrap_content"
+            android:background="@color/lightGreenTransparent"
             android:gravity="center"
-            android:paddingBottom="10dp"
-            android:layout_marginTop="20dp"
+            android:padding="@dimen/menu_recycler_text_padding"
+            android:layout_marginTop="@dimen/menu_recycler_marginTop"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textSize="@dimen/menu_recycler_text_size"
             android:textStyle="bold"
-            app:layout_constraintWidth_percent="0.6"
-            app:layout_constraintStart_toEndOf="@+id/row_image"
-            app:layout_constraintTop_toTopOf="@+id/row_image" />
+            app:layout_constraintWidth_percent="0.9"
+            app:layout_constraintBottom_toBottomOf="@id/row_image"
+            app:layout_constraintStart_toStartOf="@id/row_image"
+            app:layout_constraintEnd_toEndOf="@id/row_image"
+             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
