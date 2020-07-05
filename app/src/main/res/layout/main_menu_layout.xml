@@ -18,8 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <SearchView
-        android:id="@+id/menu_search_bar"
+    <EditText
+        android:id="@+id/menuSearchBar"
         android:layout_width="0dp"
         android:layout_height="@dimen/search_bar_height"
         android:searchIcon="@drawable/search_icon"
@@ -48,7 +48,7 @@
         android:background="@android:color/transparent"
         android:layout_marginTop="@dimen/menu_default_margin"
         app:layout_constraintHeight_percent=".8"
-        app:layout_constraintTop_toBottomOf="@id/menu_search_bar"/>
+        app:layout_constraintTop_toBottomOf="@id/menuSearchBar"/>
 
     <ProgressBar
         android:id="@+id/games_progressBar"
@@ -59,7 +59,7 @@
         app:layout_constraintBottom_toBottomOf="@id/menu_recycler"
         app:layout_constraintEnd_toEndOf="@id/menu_recycler"
         app:layout_constraintStart_toStartOf="@id/menu_recycler"
-        app:layout_constraintTop_toBottomOf="@+id/menu_search_bar"
+        app:layout_constraintTop_toBottomOf="@+id/menuSearchBar"
         />
     <TextView
         android:id="@+id/loadingInformation"

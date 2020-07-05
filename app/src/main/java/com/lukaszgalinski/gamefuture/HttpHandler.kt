@@ -49,7 +49,6 @@ class HttpHandler(private val context: Context){
                 e.printStackTrace()
             }
         }
-
         return sb.toString()
     }
 }

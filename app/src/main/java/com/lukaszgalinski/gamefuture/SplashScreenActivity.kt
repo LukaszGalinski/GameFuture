@@ -1,7 +1,6 @@
 package com.lukaszgalinski.gamefuture
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.widget.Button
@@ -23,7 +22,6 @@ class SplashScreenActivity: AppCompatActivity() {
     }
 
     private fun setShadowOnTextButton(button: Button){
-        button.setShadowLayer(24f, 4f, 4f, Color.BLACK)
         button.setOnClickListener { activityClean() }
     }
 

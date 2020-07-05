@@ -1,178 +1,53 @@
 package com.lukaszgalinski.gamefuture
 
-import android.app.Dialog
-import android.content.Context
-import android.content.SharedPreferences
-import android.content.res.Configuration
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.media.Image
-import android.os.AsyncTask
-import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.Window
-import android.widget.*
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_menu_layout.*
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.concurrent.TimeUnit
 
-private const val TAG: String = "MainMenuActivity "
-private const val URL = "https://raw.githubusercontent.com/LukaszGalinski/GameFuture/master/gameFuture.json"
-private const val JSON_ARRAY_LABEL = "games"
-private const val NAME_LABEL = "name"
-private const val DESCRIPTION_LABEL = "description"
-private const val PHOTO_URL_LABEL = "photoUrl"
-private const val SPAN_COUNT_PORTRAIT = 2
-private const val SPAN_COUNT_LANDSCAPE = 3
-private const val LAST_UPDATE_TIME_LABEL = "lastDate"
-private const val DEFAULT_UPDATE_TIME = 7*24*60*60 //week
-private const val MILLISECOND_IN_SECOND = 1000
-private const val PROGRESS_BAR_MAX_VALUE = 100
-private val arrayList = ArrayList<GamesData?>()
-lateinit var adapter: GamesListAdapter
-private lateinit var progressBar: ProgressBar
-private lateinit var loadingInfoTextView: TextView
+class MainMenuActivity: SearchActivity() {
+    private lateinit var disposable: Disposable
 
-class MainMenuActivity: AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_menu_layout)
-        progressBar = findViewById(R.id.games_progressBar)
-        loadingInfoTextView = findViewById(R.id.loadingInformation)
+    override fun onStart() {
+        super.onStart()
+        val textChangeListener = createTextChangeObservable()
+        disposable = textChangeListener
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext { showProgressBar() }
+            .observeOn(Schedulers.io())
+            .map { searchEngine.search(it)!! }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{
+                hideProgressBar()
+                showData(it)
+            }
+    }
 
-        if (getTimeDifference() > DEFAULT_UPDATE_TIME) {
-            val date1 = Calendar.getInstance().time
-            writeUpdateTimeToSharedPreferences(date1.time)
-            GetGames(this).execute()
-        } else { 
-            val newArray = SQLiteDatabaseHelper(this).loadGamesDataFromTheDatabase()
-            arrayList.clear()
-            newArray.forEachIndexed { index, _ ->
-                arrayList.add(newArray[index])
+    private fun createTextChangeObservable(): Observable<String>{
+        val textChangeObservable = Observable.create<String>{emitter ->
+            val textChange = object:TextWatcher{
+                override fun afterTextChanged(s: Editable?) = Unit
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    s?.toString()?.let { emitter.onNext(it) }
+                }
+            }
+            menuSearchBar.addTextChangedListener(textChange)
+            emitter.setCancellable {
+                menuSearchBar.removeTextChangedListener(textChange)
             }
         }
-        recyclerAdapterSet(arrayList)
+        return textChangeObservable.filter{it.length >=0}.debounce(1000, TimeUnit.MILLISECONDS)
     }
 
-    private fun recyclerAdapterSet(arrayList: ArrayList<GamesData?>) {
-        adapter = GamesListAdapter(this, arrayList)
-        val mLayoutManager: RecyclerView.LayoutManager =
-            GridLayoutManager(this, getSpanValueDependingOnScreenOrientation())
-        menu_recycler.adapter = adapter
-        menu_recycler.apply {
-            layoutManager = mLayoutManager
-        }
-        adapter.notifyDataSetChanged()
-        adapter.setOnItemClickListener(object: OnItemClickListener{
-            override fun onRecyclerItemPressed(position: Int) {
-                showAlertWithData(arrayList[position])
-            }
-        })
-    }
-
-    private fun showAlertWithData(item: GamesData?){
-        val dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCanceledOnTouchOutside(true)
-        dialog.setContentView(R.layout.main_menu_game_alert)
-        dialog.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-        val imageView = dialog.findViewById<ImageView>(R.id.row_image)
-        imageView.setImageBitmap(decodeImage(item?.photoUrl))
-        val title = dialog.findViewById<TextView>(R.id.alert_title)
-        title.text = item?.name
-        val moveForwardButton = dialog.findViewById<Button>(R.id.alert_move_forward)
-        moveForwardButton.setShadowLayer(20f,5f, 5f, Color.BLACK)
-
-        moveForwardButton.setOnClickListener {
-            Toast.makeText(this, "It Works. To be continued...", Toast.LENGTH_SHORT).show()
-        }
-
-        dialog.show()
-    }
-
-    private fun getSpanValueDependingOnScreenOrientation(): Int {
-        val orientation = resources.configuration.orientation
-        return if (orientation == Configuration.ORIENTATION_LANDSCAPE) { 
-            SPAN_COUNT_LANDSCAPE
-        } else {
-            SPAN_COUNT_PORTRAIT
-        }
-    }
-
-    private fun getTimeDifference(): Long {
-        val date1 = Calendar.getInstance().time
-        val date2 = readUpdateTimeFromSharedPreferences(date1.time)
-        return (date1.time - date2)/ MILLISECOND_IN_SECOND
-    }
-
-    private fun writeUpdateTimeToSharedPreferences(time: Long){
-        val sharedPreferences = this.getPreferences(Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.putLong(LAST_UPDATE_TIME_LABEL, time)
-        editor.apply()
-    }
-
-    private fun readUpdateTimeFromSharedPreferences(time: Long): Long {
-        val sharedPreferences: SharedPreferences = this.getPreferences(Context.MODE_PRIVATE)
-        return sharedPreferences.getLong(LAST_UPDATE_TIME_LABEL, time)
-    }
-}
-
-class GetGames(private val context: Context): AsyncTask<Void, Void, Void>() {
-    override fun onPreExecute() {
-        super.onPreExecute()
-        progressBar.visibility = View.VISIBLE
-        loadingInfoTextView.visibility = View.VISIBLE
-        Toast.makeText(context, context.resources.getString(R.string.loading_starting), Toast.LENGTH_LONG).show()
-    }
-
-    override fun doInBackground(vararg params: Void?): Void? {
-        val httpHandler = HttpHandler(context)
-        val jsonStr = httpHandler.makeServiceCall(URL)
-        try {
-            arrayList.clear()
-            val jsonObj: JSONObject = JSONObject(jsonStr)
-            val gamesArray: JSONArray = jsonObj.getJSONArray(JSON_ARRAY_LABEL)
-            getDataFromJsonFile(gamesArray)
-        } catch (e: JSONException) {
-            Log.e(TAG, context.resources.getString(R.string.data_parsing_error) + e.message)
-        }
-        return null
-    }
-
-    override fun onPostExecute(result: Void?) {
-        super.onPostExecute(result)
-        Toast.makeText(context, context.resources.getString(R.string.loading_finished), Toast.LENGTH_LONG).show()
-        progressBar.visibility = View.GONE
-        loadingInfoTextView.visibility = View.GONE
-        adapter.notifyDataSetChanged()
-        SQLiteDatabaseHelper(context).saveGamesDataIntoTheDatabase(arrayList)
-    }
-
-    private fun getDataFromJsonFile(gamesArray: JSONArray) {
-        val incrementValue = PROGRESS_BAR_MAX_VALUE/gamesArray.length()
-        var currentProgress = 0
-        for (i in 0 until gamesArray.length()) {
-            currentProgress+=incrementValue
-            progressBar.progress = currentProgress
-            val currentGame: JSONObject = gamesArray.getJSONObject(i)
-            val name = currentGame.getString(NAME_LABEL)
-            val description = currentGame.getString(DESCRIPTION_LABEL)
-            val photoUrl = currentGame.getString(PHOTO_URL_LABEL)
-            val element = GamesData(name, description, photoUrl)
-            arrayList.add(element)
+    override fun onStop() {
+        super.onStop()
+        if (!disposable.isDisposed){
+            disposable.dispose()
         }
     }
 }

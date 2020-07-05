@@ -7,7 +7,7 @@
     android:background="@android:color/transparent"
     app:cardElevation="@dimen/menu_recycler_elevation"
     app:cardCornerRadius="@dimen/menu_recycler_radius"
-    app:cardBackgroundColor="#0AFDAD">
+    app:cardBackgroundColor="@color/quarterTransparent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -30,10 +30,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="shadow die twice"
+            android:text="@string/alert_tittle"
             android:padding="@dimen/menu_recycler_text_padding"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/menu_recycler_text_size"
+            android:textSize="@dimen/alert_title_text_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/row_image"
@@ -41,19 +41,20 @@
             app:layout_constraintWidth_percent="0.45" />
 
         <TextView
-            android:id="@+id/alert_rating"
+            android:id="@+id/alert_description"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
-            android:text="ocena 5"
+            android:text="@string/alert_description"
             android:padding="@dimen/menu_recycler_text_padding"
+            android:textAlignment="inherit"
             android:textColor="@android:color/white"
             android:textSize="@dimen/menu_recycler_text_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/row_image"
             app:layout_constraintTop_toBottomOf="@+id/alert_title"
             app:layout_constraintWidth_percent="0.45"
-            app:layout_constraintHeight_percent="0.2"/>
+            app:layout_constraintHeight_percent="0.4"/>
 
         <TextView
             android:id="@+id/alert_price"
@@ -62,23 +63,21 @@
             android:gravity="center"
             android:padding="@dimen/menu_recycler_text_padding"
             android:textColor="@android:color/white"
-            android:text="price: 0.00$"
+            android:text="@string/alert_price"
             android:textStyle="bold|italic"
-            android:textSize="@dimen/menu_recycler_text_size"
+            android:textSize="@dimen/alert_price_text_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.2"
             app:layout_constraintStart_toEndOf="@+id/row_image"
-            app:layout_constraintTop_toBottomOf="@+id/alert_rating"
+            app:layout_constraintTop_toBottomOf="@+id/alert_description"
             app:layout_constraintWidth_percent="0.3" />
 
         <Button
             android:id="@+id/alert_move_forward"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/button_radius"
-            android:text="Read more"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
+            android:text="@string/alert_move_forward"
+            style="@style/textShadowOverlay"
             android:layout_marginEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
