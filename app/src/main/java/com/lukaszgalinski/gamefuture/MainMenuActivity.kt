@@ -9,6 +9,8 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_menu_layout.*
 import java.util.concurrent.TimeUnit
 
+private const val FILTER_SIGNS_MINIMUM_VALUE = 3
+private const val FILTER_TIME = 2000L
 class MainMenuActivity: SearchActivity() {
     private lateinit var disposable: Disposable
 
@@ -41,7 +43,8 @@ class MainMenuActivity: SearchActivity() {
                 menuSearchBar.removeTextChangedListener(textChange)
             }
         }
-        return textChangeObservable.filter{it.length >=0}.debounce(1000, TimeUnit.MILLISECONDS)
+        return textChangeObservable.filter{it.length >= FILTER_SIGNS_MINIMUM_VALUE}.debounce(
+            FILTER_TIME, TimeUnit.MILLISECONDS)
     }
 
     override fun onStop() {

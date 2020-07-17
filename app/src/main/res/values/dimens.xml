@@ -21,4 +21,6 @@
 
     <dimen name="alert_title_text_size">16sp</dimen>
     <dimen name="alert_price_text_size">15sp</dimen>
+
+    <dimen name="toolbar_height">60dp</dimen>
 </resources>

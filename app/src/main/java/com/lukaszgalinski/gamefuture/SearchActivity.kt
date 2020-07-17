@@ -2,6 +2,7 @@ package com.lukaszgalinski.gamefuture
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Color
@@ -41,25 +42,24 @@ private const val LAST_UPDATE_TIME_LABEL = "lastDate"
 private const val DEFAULT_UPDATE_TIME = 7*24*60*60 //week
 private const val MILLISECOND_IN_SECOND = 1000
 private const val PROGRESS_BAR_MAX_VALUE = 100
+private const val ACTIVITY_STATE_CHECKER = "state"
 abstract class SearchActivity: AppCompatActivity(){
-    var gamesList = listOf<Games>()
+    private var gamesList = listOf<Games>()
     private val adapter = GamesListAdapter()
     private val compositeDisposable = CompositeDisposable()
     protected lateinit var searchEngine: SearchEngine
 
     private lateinit var progressBar: ProgressBar
-    private lateinit var loadingInfoTextView: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_menu_layout)
         progressBar = findViewById(R.id.games_progressBar)
-        loadingInfoTextView = findViewById(R.id.loadingInformation)
         searchEngine = SearchEngine(this)
-
         val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(this, getSpanValueDependingOnScreenOrientation())
-        menu_recycler.adapter = adapter
         menu_recycler.apply { layoutManager = mLayoutManager }
+        menu_recycler.adapter = adapter
 
         adapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onRecyclerItemPressed(position: Int) {
@@ -78,31 +78,30 @@ abstract class SearchActivity: AppCompatActivity(){
         adapter.games = result
     }
 
-    private fun loadInitialData(context: Context): Flowable<List<Long>> {
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(ACTIVITY_STATE_CHECKER, true)
+    }
 
+    private fun loadInitialData(context: Context): Flowable<List<Long>> {
         return Maybe.fromAction<List<Long>>{
             val database = GamesDatabase.loadInstance(context = context).gamesDao()
-            if (getTimeDifference() > 500) {
-                println("loading and saving")
+            if (getTimeDifference() > DEFAULT_UPDATE_TIME) {
                 val listOfTheGames = loadDataFromHTTP(this)
                 database.insertAll(listOfTheGames)
                 gamesList = listOfTheGames
-                println("Twoja dane : "+ gamesList)
                 updateTimeInSP()
             } else {
                 gamesList = database.loadAll()
-                println("loading only")
             }
-
         }.toFlowable()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
                 adapter.games = gamesList
-                Toast.makeText(context, "loaded successfully", Toast.LENGTH_LONG).show()
             }
             .doOnError {
-               Toast.makeText(context, "error while loading", Toast.LENGTH_LONG).show()
+               Toast.makeText(context, resources.getString(R.string.loading_error), Toast.LENGTH_LONG).show()
             }
     }
 
@@ -112,14 +111,6 @@ abstract class SearchActivity: AppCompatActivity(){
 
     protected fun hideProgressBar(){
         progressBar.visibility = View.GONE
-    }
-
-    protected fun showLoadingInformation(){
-        loadingInfoTextView.visibility = View.VISIBLE
-    }
-
-    protected fun hideLoadingInformation(){
-        loadingInfoTextView.visibility = View.GONE
     }
 
     private fun convertJsonToList(gamesArray: JSONArray): ArrayList<Games> {
@@ -167,9 +158,11 @@ abstract class SearchActivity: AppCompatActivity(){
         val moveForwardButton = dialog.findViewById<Button>(R.id.alert_move_forward)
 
         moveForwardButton.setOnClickListener {
-            Toast.makeText(this, "It Works. To be continued...", Toast.LENGTH_SHORT).show()
-        }
+            dialog.dismiss()
+            startActivity(Intent(this, GameDetailsActivity::class.java))
+            finish()
 
+        }
         dialog.show()
     }
 

@@ -25,4 +25,17 @@
         <item name="android:shadowRadius">23</item>
     </style>
 
+    <style name="tab.layout.appearance" parent="Theme.MaterialComponents">
+        <item name="tabSelectedTextColor">@color/lightGreen</item>
+        <item name="tabInlineLabel">true</item>
+        <item name="tabIndicatorColor">@color/lightGreen</item>
+
+    </style>
+
+   <!-- <style name="TextAppearance.App.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="fontFamily">@font/rubik</item>
+        <item name="android:fontFamily">@font/rubik</item>
+        <item name="textAppearanceButton">@style/TextAppearance.App.Button</item>
+    </style>-->
+
 </resources>

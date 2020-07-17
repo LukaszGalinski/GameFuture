@@ -55,23 +55,11 @@
         android:layout_width="200dp"
         android:layout_height="5dp"
         android:visibility="gone"
-        style="@style/customProgressbar"
         app:layout_constraintBottom_toBottomOf="@id/menu_recycler"
         app:layout_constraintEnd_toEndOf="@id/menu_recycler"
         app:layout_constraintStart_toStartOf="@id/menu_recycler"
         app:layout_constraintTop_toBottomOf="@+id/menuSearchBar"
         />
-    <TextView
-        android:id="@+id/loadingInformation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/menu_default_margin"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:visibility="gone"
-        android:gravity="center_horizontal"
-        android:text="@string/loading_information"
-        app:layout_constraintTop_toBottomOf="@id/games_progressBar"/>
 
     <View
         android:layout_width="match_parent"

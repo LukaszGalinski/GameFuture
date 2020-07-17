@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lukaszgalinski.gamefuture.database.Games
 import kotlinx.android.synthetic.main.menu_list_row.view.*
 
-class GamesListAdapter() : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>() {
+class GamesListAdapter : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>() {
     private lateinit var onItemClickListener: OnItemClickListener
 
     var games: List<Games> = arrayListOf()
@@ -30,7 +30,6 @@ class GamesListAdapter() : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder
     class GamesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val name: TextView = itemView.text1
         val image: ImageView = itemView.row_image
-
     }
 
     override fun getItemCount(): Int {
@@ -43,7 +42,6 @@ class GamesListAdapter() : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder
         holder.name.setShadowLayer(20f, 5f, 5f, Color.BLACK)
         holder.image.setImageBitmap(decodeImage(element.photo))
         holder.image.clipToOutline = true
-
         holder.itemView.setOnClickListener {
             onItemClickListener.onRecyclerItemPressed(position)
         }
