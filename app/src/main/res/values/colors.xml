@@ -8,4 +8,5 @@
     <color name="grayQuarterTransparent">#3CA3A3A3</color>
     <color name="lightGreen">#ED0BFD8A</color>
     <color name="lightGreenTransparent">#9B0BFD8A</color>
+    <color name="lightGreenQuarterTransparent">#2F0BFD8A</color>
 </resources>

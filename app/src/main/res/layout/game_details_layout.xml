@@ -3,17 +3,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/halfTransparent">
+    android:background="@drawable/czarne">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabGallery"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:tabMode="scrollable"
+        app:tabGravity="center"
+        app:tabPaddingStart="5dp"
+        app:tabPaddingEnd="5dp"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="10dp"
+        app:tabIndicator="@android:color/transparent"
+        android:theme="@style/tab.layout.appearance"
+        android:elevation="15dp"
+        app:layout_constraintHeight_percent=".07"
+        app:layout_constraintTop_toBottomOf="@id/gallery" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/gallery"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/halfTransparent"
         android:clipToPadding="false"
+        android:clipChildren="false"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="5dp"
         android:contentDescription="@string/details_gallery"
         android:overScrollMode="never"
-        android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent=".35"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,12 +44,12 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:gravity="center"
-        android:text="SEKIRO"
-        android:background="@color/halfTransparent"
+        android:text="Sekiro: Shadows Die Twice"
+        android:background="@android:color/transparent"
         android:padding="10dp"
         android:textSize="16sp"
         style="@style/textShadowOverlay"
-        app:layout_constraintTop_toBottomOf="@id/gallery" />
+        app:layout_constraintTop_toBottomOf="@id/tabGallery" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
@@ -45,6 +64,6 @@
         android:id="@+id/games_viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintHeight_percent="0.45"
         app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

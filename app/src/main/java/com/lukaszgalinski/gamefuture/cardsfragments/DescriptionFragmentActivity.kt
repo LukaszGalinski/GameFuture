@@ -1,4 +1,4 @@
-package com.lukaszgalinski.gamefuture.fragments
+package com.lukaszgalinski.gamefuture.cardsfragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,20 +7,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.lukaszgalinski.gamefuture.R
 
-
-class VideoFragmentActivity: Fragment() {
+class DescriptionFragmentActivity : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.video_fragment_layout, container, false)
+        return inflater.inflate(R.layout.description_fragment_layout, container, false)
     }
 
     companion object {
-        fun newInstance(): VideoFragmentActivity {
-            return VideoFragmentActivity()
+        fun newInstance(): DescriptionFragmentActivity {
+            return DescriptionFragmentActivity()
         }
     }
 }

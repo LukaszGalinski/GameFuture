@@ -11,6 +11,8 @@
     <dimen name="splash_default_margin">30dp</dimen>
     <dimen name="splash_welcome_message">23sp</dimen>
     <dimen name="splash_button_height">60dp</dimen>
+    <dimen name="menu_edit_text_padding">10dp</dimen>
+    <dimen name="menu_edit_text_drawable_padding">10dp</dimen>
 
     <dimen name="menu_recycler_elevation">13dp</dimen>
     <dimen name="menu_recycler_radius">13dp</dimen>

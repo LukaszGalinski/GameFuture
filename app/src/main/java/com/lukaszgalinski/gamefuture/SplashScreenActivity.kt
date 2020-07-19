@@ -32,9 +32,9 @@ class SplashScreenActivity: AppCompatActivity() {
     }
 
     private fun activityClean(){
+        screenChangeHandler.removeCallbacksAndMessages(null)
         finish()
         startActivity(Intent(this, MainMenuActivity::class.java))
-        screenChangeHandler.removeCallbacksAndMessages(null)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -1,4 +1,4 @@
-package com.lukaszgalinski.gamefuture.fragments
+package com.lukaszgalinski.gamefuture.cardsfragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

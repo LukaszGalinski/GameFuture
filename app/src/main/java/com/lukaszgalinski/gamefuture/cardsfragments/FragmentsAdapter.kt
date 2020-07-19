@@ -1,4 +1,4 @@
-package com.lukaszgalinski.gamefuture.fragments
+package com.lukaszgalinski.gamefuture.cardsfragments
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

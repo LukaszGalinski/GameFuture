@@ -29,7 +29,7 @@
         <item name="tabSelectedTextColor">@color/lightGreen</item>
         <item name="tabInlineLabel">true</item>
         <item name="tabIndicatorColor">@color/lightGreen</item>
-
+        <item name="colorPrimary">@color/lightGreen</item>
     </style>
 
    <!-- <style name="TextAppearance.App.Button" parent="TextAppearance.MaterialComponents.Button">

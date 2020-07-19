@@ -8,7 +8,6 @@ import androidx.room.RoomDatabase
 private const val DATABASE_VERSION = 1
 private const val DATABASE_NAME = "gamesDatabase"
 
-
 @Database(entities = [(Games::class)], version = DATABASE_VERSION)
 abstract class GamesDatabase: RoomDatabase() {
 
