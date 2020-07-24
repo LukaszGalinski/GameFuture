@@ -85,7 +85,6 @@ abstract class SearchActivity: AppCompatActivity(){
             .doOnError {
                Toast.makeText(context, resources.getString(R.string.loading_error), Toast.LENGTH_LONG).show()
             }
-
     }
 
     protected fun showProgressBar(){
@@ -103,7 +102,7 @@ abstract class SearchActivity: AppCompatActivity(){
         try {
             val jsonObj = JSONObject(jsonStr)
             val gamesArray: JSONArray = jsonObj.getJSONArray(JSON_ARRAY_LABEL)
-            formattedArray = convertFromJsonArray(gamesArray)
+            formattedArray = convertFromJsonArray(this, gamesArray)
         } catch (e: JSONException) {
             Log.e(TAG, context.resources.getString(R.string.data_parsing_error) + e.message)
         }

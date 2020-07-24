@@ -59,7 +59,7 @@ class GameDetailsActivity : FragmentActivity() {
                     tab.text = resources.getString(R.string.details_video)
                     tab.icon = ResourcesCompat.getDrawable(
                         resources,
-                        R.drawable.ic_baseline_camera_24,
+                        R.drawable.icon_camera,
                         null
                     )
                 }

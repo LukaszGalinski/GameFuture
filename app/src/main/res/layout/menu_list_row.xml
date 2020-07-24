@@ -34,14 +34,24 @@
             android:gravity="center"
             android:alpha="0.8"
             android:padding="@dimen/menu_recycler_text_padding"
+            style="@style/textShadowOverlay"
             android:layout_marginTop="@dimen/menu_recycler_marginTop"
-            android:textColor="@android:color/white"
             android:textSize="@dimen/menu_recycler_text_size"
-            android:textStyle="bold"
             app:layout_constraintWidth_percent="0.9"
             app:layout_constraintBottom_toBottomOf="@id/row_image"
             app:layout_constraintStart_toStartOf="@id/row_image"
             app:layout_constraintEnd_toEndOf="@id/row_image"
              />
+
+        <CheckBox
+            android:id="@+id/favourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:button="@drawable/custom_favourite_icon"
+            android:contentDescription="@string/favourites"
+            app:layout_constraintTop_toTopOf="@id/row_image"
+            app:layout_constraintEnd_toEndOf="@id/row_image"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

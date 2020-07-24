@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/czarne">
+    android:background="@drawable/background">
 
     <ImageView
         android:id="@+id/splash_logo"
@@ -23,10 +23,10 @@
         android:layout_marginTop="@dimen/splash_default_margin"
         android:layout_height="@dimen/welcome_message_height"
         app:layout_constraintTop_toBottomOf="@id/splash_logo"
-        android:textColor="@android:color/white"
-        android:alpha="0.8"
+        android:alpha="0.6"
+        style="@style/textShadowOverlay"
+        android:shadowColor="@android:color/white"
         android:gravity="center"
-        android:textStyle="bold"
         android:textSize="@dimen/splash_welcome_message"
         android:text="@string/splash_text"
         />
@@ -37,6 +37,7 @@
         android:layout_height="@dimen/splash_button_height"
         app:layout_constraintWidth_percent="0.6"
         style="@style/textShadowOverlay"
+        android:background="@drawable/button_radius"
         android:text="@string/splash_skip"
         app:layout_constraintTop_toBottomOf="@id/splash_note"
         app:layout_constraintEnd_toEndOf="parent"

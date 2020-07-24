@@ -2,8 +2,6 @@ package com.lukaszgalinski.gamefuture.database
 
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import io.reactivex.Flowable
-import io.reactivex.Single
 
 @Dao
 interface GamesDao {
@@ -17,5 +15,12 @@ interface GamesDao {
     @Insert(onConflict = REPLACE)
     fun insertAll(games: List<Games>)
 
+    @Query("SELECT * FROM games WHERE favourite = 1")
+    fun getFavouriteList(): List<Games>
 
+    @Query("SELECT favourite FROM games WHERE gameId = :position")
+    fun getFavouriteStatus(position: Int): Boolean
+
+    @Query("UPDATE games SET favourite = :status WHERE gameId = :position")
+    fun changeFavouriteStatus(position: Int, status: Boolean)
 }

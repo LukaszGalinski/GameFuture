@@ -1,9 +1,9 @@
 package com.lukaszgalinski.gamefuture
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +11,7 @@ import com.lukaszgalinski.gamefuture.database.Games
 import kotlinx.android.synthetic.main.menu_list_row.view.*
 
 class GamesListAdapter : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>() {
-    private lateinit var onItemClickListener: OnItemClickListener
+    private lateinit var gameClickListener: GameClickListener
 
     var games: List<Games> = arrayListOf()
         set(value) {
@@ -19,8 +19,8 @@ class GamesListAdapter : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>(
             notifyDataSetChanged()
         }
 
-    fun setOnItemClickListener(itemClickListener: OnItemClickListener){
-        this.onItemClickListener = itemClickListener
+    fun setOnItemClickListener(itemClickListener: GameClickListener){
+        this.gameClickListener = itemClickListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GamesViewHolder {
@@ -30,6 +30,7 @@ class GamesListAdapter : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>(
     class GamesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val name: TextView = itemView.text1
         val image: ImageView = itemView.row_image
+        val favourite: CheckBox = itemView.favourite
     }
 
     override fun getItemCount(): Int {
@@ -39,11 +40,14 @@ class GamesListAdapter : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>(
     override fun onBindViewHolder(holder: GamesViewHolder, position: Int) {
         val element = games[position]
         holder.name.text = element.name
-        holder.name.setShadowLayer(20f, 5f, 5f, Color.BLACK)
         holder.image.setImageBitmap(decodeImage(element.photo))
         holder.image.clipToOutline = true
+        holder.favourite.isChecked = games[position].favourite
         holder.itemView.setOnClickListener {
-            onItemClickListener.onRecyclerItemPressed(position)
+            gameClickListener.onRecyclerItemPressed(position)
+        }
+        holder.favourite.setOnClickListener{
+            gameClickListener.onFavouriteClick(position.inc(), holder.favourite.isChecked)
         }
     }
 }

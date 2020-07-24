@@ -6,28 +6,31 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.lukaszgalinski.gamefuture.database.Games
+import com.lukaszgalinski.gamefuture.database.GamesDatabase
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_menu_layout.*
 import java.util.concurrent.TimeUnit
 
-private const val FILTER_SIGNS_MINIMUM_VALUE = 3
-private const val FILTER_TIME = 2000L
+private const val FILTER_TIME = 1000L
+private const val CHANGE_FAVOURITE_STATUS_TAG = "Favourite status change"
 class MainMenuActivity: SearchActivity() {
-    private lateinit var disposable: Disposable
+    private lateinit var compositeDisposable: CompositeDisposable
 
     override fun onStart() {
         super.onStart()
         val textChangeListener = createTextChangeObservable()
-        disposable = textChangeListener
+        compositeDisposable = CompositeDisposable()
+        val disposable = textChangeListener
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext { showProgressBar() }
             .observeOn(Schedulers.io())
@@ -37,10 +40,21 @@ class MainMenuActivity: SearchActivity() {
                 hideProgressBar()
                 showData(it)
             }
+        compositeDisposable.add(disposable)
 
-        gamesListAdapter.setOnItemClickListener(object : OnItemClickListener {
+        gamesListAdapter.setOnItemClickListener(object : GameClickListener {
             override fun onRecyclerItemPressed(position: Int) {
                 showAlertWithData(gamesList[position])
+            }
+
+            override fun onFavouriteClick(position: Int, status: Boolean){
+                val favouriteChangeDisposable = Observable.fromCallable { (GamesDatabase.loadInstance(this@MainMenuActivity).gamesDao().changeFavouriteStatus(position, status)) }
+                    .subscribeOn(Schedulers.io())
+                    .doOnError{ Log.w(CHANGE_FAVOURITE_STATUS_TAG,": Error" ) }
+                    .doOnComplete{Log.w(CHANGE_FAVOURITE_STATUS_TAG,": Success" )}
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe()
+                compositeDisposable.add(favouriteChangeDisposable)
             }
         })
     }
@@ -80,14 +94,13 @@ class MainMenuActivity: SearchActivity() {
                 menuSearchBar.removeTextChangedListener(textChange)
             }
         }
-        return textChangeObservable.filter{it.length >= FILTER_SIGNS_MINIMUM_VALUE}.debounce(
-            FILTER_TIME, TimeUnit.MILLISECONDS)
+        return textChangeObservable.debounce(FILTER_TIME, TimeUnit.MILLISECONDS)
     }
 
     override fun onStop() {
         super.onStop()
-        if (!disposable.isDisposed){
-            disposable.dispose()
+        if (compositeDisposable.isDisposed){
+            compositeDisposable.dispose()
         }
     }
 }

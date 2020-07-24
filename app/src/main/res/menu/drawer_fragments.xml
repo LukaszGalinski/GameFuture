@@ -7,7 +7,7 @@
     <item
         android:id="@+id/secondFragmentItem"
         android:title="@string/details_video"
-        android:icon="@drawable/ic_baseline_camera_24"/>
+        android:icon="@drawable/icon_camera"/>
     <item
         android:id="@+id/thirdFragmentItem"
         android:title="@string/details_shop"
