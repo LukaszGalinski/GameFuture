@@ -7,13 +7,13 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.lukaszgalinski.gamefuture.database.Games
+import com.lukaszgalinski.gamefuture.database.GamesModel
 import kotlinx.android.synthetic.main.menu_list_row.view.*
 
 class GamesListAdapter : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>() {
     private lateinit var gameClickListener: GameClickListener
 
-    var games: List<Games> = arrayListOf()
+    var games: List<GamesModel> = arrayListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -47,7 +47,7 @@ class GamesListAdapter : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>(
             gameClickListener.onRecyclerItemPressed(position)
         }
         holder.favourite.setOnClickListener{
-            gameClickListener.onFavouriteClick(position.inc(), holder.favourite.isChecked)
+            gameClickListener.onFavouriteClick(games[position].id, holder.favourite.isChecked)
         }
     }
 }

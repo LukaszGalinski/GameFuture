@@ -9,7 +9,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lukaszgalinski.gamefuture.database.Games
+import com.lukaszgalinski.gamefuture.database.GamesModel
 import com.lukaszgalinski.gamefuture.database.GamesDatabase
 import io.reactivex.Flowable
 import io.reactivex.Maybe
@@ -32,7 +32,7 @@ private const val MILLISECOND_IN_SECOND = 1000
 private const val ACTIVITY_STATE_CHECKER = "state"
 
 abstract class SearchActivity: AppCompatActivity(){
-    protected var gamesList = listOf<Games>()
+    protected var gamesList = listOf<GamesModel>()
     protected val gamesListAdapter = GamesListAdapter()
     private val compositeDisposable = CompositeDisposable()
     protected lateinit var searchEngine: SearchEngine
@@ -51,7 +51,7 @@ abstract class SearchActivity: AppCompatActivity(){
         compositeDisposable.add(initialData)
     }
 
-    protected fun showData(result: List<Games>){
+    protected fun showData(result: List<GamesModel>){
         if(result.isEmpty()){
             Toast.makeText(this, this.resources.getString(R.string.no_results), Toast.LENGTH_SHORT).show()
         }
@@ -87,16 +87,8 @@ abstract class SearchActivity: AppCompatActivity(){
             }
     }
 
-    protected fun showProgressBar(){
-        progressBar.visibility = View.VISIBLE
-    }
-
-    protected fun hideProgressBar(){
-        progressBar.visibility = View.GONE
-    }
-
-    private fun loadDataFromHTTP(context: Context): ArrayList<Games> {
-        var formattedArray = ArrayList<Games>()
+    private fun loadDataFromHTTP(context: Context): ArrayList<GamesModel> {
+        var formattedArray = ArrayList<GamesModel>()
         val httpHandler = HttpHandler(context)
         val jsonStr = httpHandler.makeServiceCall(URL)
         try {
@@ -108,8 +100,6 @@ abstract class SearchActivity: AppCompatActivity(){
         }
         return formattedArray
     }
-
-
 
     private fun calculateTimeFromLastDataUpdate(): Long {
         val date1 = Calendar.getInstance().time
@@ -135,4 +125,13 @@ abstract class SearchActivity: AppCompatActivity(){
         GamesDatabase.destroyInstance()
         compositeDisposable.clear()
     }
+
+    protected fun showProgressBar(){
+        progressBar.visibility = View.VISIBLE
+    }
+
+    protected fun hideProgressBar(){
+        progressBar.visibility = View.GONE
+    }
+
 }

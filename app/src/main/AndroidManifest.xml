@@ -24,5 +24,8 @@
         <activity
             android:name=".GameDetailsActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".FavouritesActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 </manifest>

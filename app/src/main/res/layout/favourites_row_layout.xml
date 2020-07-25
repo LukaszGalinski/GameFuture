@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/menu_default_margin">
+
+    <ImageView
+        android:id="@+id/favourite_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/border"
+        android:contentDescription="@string/game_image"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/favourite_title"
+        style="@style/textShadowOverlay"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:alpha="0.8"
+        android:background="@color/halfTransparent"
+        android:gravity="center"
+        android:padding="@dimen/menu_recycler_text_padding"
+        android:textSize="@dimen/menu_recycler_text_size"
+        app:layout_constraintWidth_percent="0.5"
+        app:layout_constraintTop_toTopOf="@id/favourite_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/favourite_image"
+         />
+
+        <CheckBox
+            android:id="@+id/favourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:button="@drawable/custom_favourite_icon"
+            android:contentDescription="@string/favourites"
+            app:layout_constraintEnd_toEndOf="@id/favourite_image"
+            app:layout_constraintBottom_toBottomOf="@id/favourite_image"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>

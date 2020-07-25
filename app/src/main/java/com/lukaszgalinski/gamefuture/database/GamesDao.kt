@@ -7,16 +7,16 @@ import androidx.room.OnConflictStrategy.REPLACE
 interface GamesDao {
 
     @Query("SELECT * FROM games")
-    fun loadAll(): List<Games>
+    fun loadAll(): List<GamesModel>
 
     @Query("SELECT * FROM games WHERE name LIKE :name")
-    fun filterGamesByName(name: String): List<Games>
+    fun filterGamesByName(name: String): List<GamesModel>
 
     @Insert(onConflict = REPLACE)
-    fun insertAll(games: List<Games>)
+    fun insertAll(games: List<GamesModel>)
 
     @Query("SELECT * FROM games WHERE favourite = 1")
-    fun getFavouriteList(): List<Games>
+    fun getFavouriteList(): List<GamesModel>
 
     @Query("SELECT favourite FROM games WHERE gameId = :position")
     fun getFavouriteStatus(position: Int): Boolean

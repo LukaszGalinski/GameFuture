@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 private const val DATABASE_VERSION = 1
 private const val DATABASE_NAME = "GamesDatabase"
 
-@Database(entities = [(Games::class)], version = DATABASE_VERSION)
+@Database(entities = [(GamesModel::class)], version = DATABASE_VERSION)
 abstract class GamesDatabase: RoomDatabase() {
 
     abstract fun gamesDao(): GamesDao

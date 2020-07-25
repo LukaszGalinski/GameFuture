@@ -1,19 +1,22 @@
 package com.lukaszgalinski.gamefuture
 
 import android.app.Dialog
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.lukaszgalinski.gamefuture.database.Games
-import com.lukaszgalinski.gamefuture.database.GamesDatabase
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.lukaszgalinski.gamefuture.database.GamesModel
+import com.lukaszgalinski.gamefuture.database.changeFavouriteStatus
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -21,13 +24,19 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_menu_layout.*
 import java.util.concurrent.TimeUnit
 
+private const val FAVOURITES_CHANGED_BROADCAST = "favouritesChangedBroadcast"
+private const val BROADCAST_PASS_ID = "passId"
+private const val BROADCAST_PASS_STATUS = "passStatus"
 private const val FILTER_TIME = 1000L
-private const val CHANGE_FAVOURITE_STATUS_TAG = "Favourite status change"
 class MainMenuActivity: SearchActivity() {
     private lateinit var compositeDisposable: CompositeDisposable
 
     override fun onStart() {
         super.onStart()
+        menu_favourites.setOnClickListener {
+            startActivity(Intent(this, FavouritesActivity::class.java))
+        }
+
         val textChangeListener = createTextChangeObservable()
         compositeDisposable = CompositeDisposable()
         val disposable = textChangeListener
@@ -36,7 +45,7 @@ class MainMenuActivity: SearchActivity() {
             .observeOn(Schedulers.io())
             .map { searchEngine.search(it)!! }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{
+            .subscribe {
                 hideProgressBar()
                 showData(it)
             }
@@ -47,19 +56,14 @@ class MainMenuActivity: SearchActivity() {
                 showAlertWithData(gamesList[position])
             }
 
-            override fun onFavouriteClick(position: Int, status: Boolean){
-                val favouriteChangeDisposable = Observable.fromCallable { (GamesDatabase.loadInstance(this@MainMenuActivity).gamesDao().changeFavouriteStatus(position, status)) }
-                    .subscribeOn(Schedulers.io())
-                    .doOnError{ Log.w(CHANGE_FAVOURITE_STATUS_TAG,": Error" ) }
-                    .doOnComplete{Log.w(CHANGE_FAVOURITE_STATUS_TAG,": Success" )}
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
+            override fun onFavouriteClick(position: Int, status: Boolean) {
+                val favouriteChangeDisposable = changeFavouriteStatus(this@MainMenuActivity, position, status)
                 compositeDisposable.add(favouriteChangeDisposable)
             }
         })
     }
 
-    private fun showAlertWithData(item: Games) {
+    private fun showAlertWithData(item: GamesModel) {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCanceledOnTouchOutside(true)
@@ -75,7 +79,6 @@ class MainMenuActivity: SearchActivity() {
         moveForwardButton.setOnClickListener {
             dialog.dismiss()
             startActivity(Intent(this, GameDetailsActivity::class.java))
-            finish()
         }
         dialog.show()
     }
@@ -97,10 +100,32 @@ class MainMenuActivity: SearchActivity() {
         return textChangeObservable.debounce(FILTER_TIME, TimeUnit.MILLISECONDS)
     }
 
+    private fun setFavouritesBroadcastReceiver(): BroadcastReceiver{
+        return object: BroadcastReceiver(){
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val itemPosition = intent?.getIntExtra(BROADCAST_PASS_ID, 1)?.minus(1)!!
+                val status = intent.getBooleanExtra(BROADCAST_PASS_STATUS, false)
+                gamesList[itemPosition].favourite = status
+                gamesListAdapter.notifyItemChanged(itemPosition)
+            }
+        }
+    }
+
     override fun onStop() {
         super.onStop()
         if (compositeDisposable.isDisposed){
             compositeDisposable.dispose()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val intentFilter = IntentFilter(FAVOURITES_CHANGED_BROADCAST)
+        LocalBroadcastManager.getInstance(this).registerReceiver(setFavouritesBroadcastReceiver(), intentFilter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(setFavouritesBroadcastReceiver())
     }
 }

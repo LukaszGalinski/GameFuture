@@ -5,7 +5,7 @@ import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
-import com.lukaszgalinski.gamefuture.database.Games
+import com.lukaszgalinski.gamefuture.database.GamesModel
 import com.lukaszgalinski.gamefuture.database.GamesDatabase
 import org.json.JSONArray
 import org.json.JSONObject
@@ -32,8 +32,8 @@ fun getSpanValueDependingOnScreenOrientation(context: Context): Int {
     }
 }
 
-fun convertFromJsonArray(context: Context, gamesArray: JSONArray): ArrayList<Games> {
-    val testArray = ArrayList<Games>()
+fun convertFromJsonArray(context: Context, gamesArray: JSONArray): ArrayList<GamesModel> {
+    val testArray = ArrayList<GamesModel>()
     for (i in 0 until gamesArray.length()) {
         val currentGame: JSONObject = gamesArray.getJSONObject(i)
         val id = currentGame.getInt(ID_LABEL)
@@ -41,7 +41,7 @@ fun convertFromJsonArray(context: Context, gamesArray: JSONArray): ArrayList<Gam
         val description = currentGame.getString(DESCRIPTION_LABEL)
         val photoUrl = currentGame.getString(PHOTO_URL_LABEL)
         val favouriteStatus = GamesDatabase.loadInstance(context).gamesDao().getFavouriteStatus(id)
-        testArray.add(Games(id = id, name = name, description = description, photo = photoUrl, favourite = favouriteStatus))
+        testArray.add(GamesModel(id = id, name = name, description = description, photo = photoUrl, favourite = favouriteStatus))
     }
     return testArray
 }

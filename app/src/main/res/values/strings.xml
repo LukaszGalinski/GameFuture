@@ -26,5 +26,9 @@
     <string name="details_description">Description</string>
     <string name="details_video">Video</string>
     <string name="details_shop">Shop</string>
-    <string name="search_for_a_game">search for a game...</string>
+    <string name="search_for_a_game">search for a game&#8230;</string>
+
+    <string name="error">Error</string>
+    <string name="success">Success</string>
+    <string name="no_data_to_show">You didn\'t add any favourite games yet</string>
 </resources>

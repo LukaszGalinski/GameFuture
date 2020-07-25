@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.lukaszgalinski.gamefuture.cardsfragments.FragmentsAdapter
 import kotlin.math.abs
 
+private const val GAME_ID_LABEL = "gameIdLabel"
 private const val SELECTED_IMAGE_SCALE_HEIGHT = .5f
 private const val UNSELECTED_IMAGE_SCALE_HEIGHT = .25f
 private const val MARGIN_PAGE_TRANSFORMER_VALUE = 20
@@ -21,31 +22,39 @@ private const val UNSELECTED_IMAGE_ALPHA = .3f
 private const val SELECTED_IMAGE_ALPHA = 1f
 private lateinit var cardsPager: ViewPager2
 private lateinit var cardsToolbar: TabLayout
+private lateinit var galleryPager: ViewPager2
+private lateinit var galleryToolbar: TabLayout
 private lateinit var fragmentsAdapter: FragmentsAdapter
 
 class GameDetailsActivity : FragmentActivity() {
 
-    private val visibleGalleryImagesCount = 3
+    private val galleryMaxVisibleElements = 3
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_details_layout)
-        cardsPager = findViewById(R.id.games_viewPager)
-        cardsToolbar = findViewById(R.id.tabLayout)
-        val galleryToolbar = findViewById<TabLayout>(R.id.tabGallery)
-        val galleryPager = findViewById<ViewPager2>(R.id.gallery)
+        val gameId = intent.extras?.getInt(GAME_ID_LABEL)
+        println("gameId: $gameId")
+        buildFragmentCards()
+        buildGallery()
+    }
+
+    private fun buildGallery(){
+        galleryToolbar = findViewById(R.id.tabGallery)
+        galleryPager = findViewById(R.id.gallery)
+        //load data from the database - to be done
         val galleryImagesList = arrayListOf(R.drawable.acoddysey, R.drawable.acwallhalla, R.drawable.cabal)
         val galleryAdapter = GallerySliderAdapter(this, galleryImagesList)
         galleryPager.adapter = galleryAdapter
         createViewPagerAnimation(galleryPager)
-        setUnselectedGalleryItems(galleryToolbar)
-        setImagesGalleryToolbar(galleryPager, galleryToolbar, galleryImagesList)
-        fragmentsAdapter = FragmentsAdapter(this)
-        cardsPager.adapter = fragmentsAdapter
-        setCardsToolbar(cardsPager, cardsToolbar)
+        buildGalleryToolbar(galleryPager, galleryToolbar, galleryImagesList)
     }
 
-    private fun setCardsToolbar(pager: ViewPager2, tabLayout: TabLayout) {
-        TabLayoutMediator(tabLayout, pager) { tab, position ->
+    private fun buildFragmentCards() {
+        cardsPager = findViewById(R.id.games_viewPager)
+        cardsToolbar = findViewById(R.id.tabLayout)
+        fragmentsAdapter = FragmentsAdapter(this)
+        cardsPager.adapter = fragmentsAdapter
+        TabLayoutMediator(cardsToolbar, cardsPager) { tab, position ->
             when (position) {
                 0 -> {
                     tab.text = resources.getString(R.string.details_description)
@@ -75,7 +84,7 @@ class GameDetailsActivity : FragmentActivity() {
         }.attach()
     }
 
-    private fun setImagesGalleryToolbar(pager: ViewPager2, tabLayout: TabLayout, imagesArray: ArrayList<Int>) {
+    private fun buildGalleryToolbar(pager: ViewPager2, tabLayout: TabLayout, imagesArray: ArrayList<Int>) {
         TabLayoutMediator(tabLayout, pager) { tab, position ->
             val customBackgroundLayout =
                 View.inflate(this, R.layout.gallery_layout, null)
@@ -87,10 +96,7 @@ class GameDetailsActivity : FragmentActivity() {
             tab.customView = customBackgroundLayout
         }.attach()
 
-    }
-
-    private fun setUnselectedGalleryItems(toolbar: TabLayout) {
-        toolbar.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
             override fun onTabUnselected(tab: TabLayout.Tab?) { tab?.view?.alpha = UNSELECTED_IMAGE_ALPHA }
             override fun onTabSelected(tab: TabLayout.Tab?) { tab?.view?.alpha = SELECTED_IMAGE_ALPHA }
@@ -104,7 +110,7 @@ class GameDetailsActivity : FragmentActivity() {
             val position = 1 - abs(fl)
             view.scaleY = SELECTED_IMAGE_SCALE_HEIGHT + position + UNSELECTED_IMAGE_SCALE_HEIGHT
         }
-        viewPager.offscreenPageLimit = visibleGalleryImagesCount
+        viewPager.offscreenPageLimit = galleryMaxVisibleElements
         viewPager.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         viewPager.setPageTransformer(compositePageTransformer)
     }
