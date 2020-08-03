@@ -1,4 +1,4 @@
-package com.lukaszgalinski.gamefuture
+package com.lukaszgalinski.gamefuture.view.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,10 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.lukaszgalinski.gamefuture.database.GamesModel
+import com.lukaszgalinski.gamefuture.R
+import com.lukaszgalinski.gamefuture.models.GamesModel
+import com.lukaszgalinski.gamefuture.utilities.decodeImage
+import com.lukaszgalinski.gamefuture.view.callbacks.GameClickListener
 import kotlinx.android.synthetic.main.menu_list_row.view.*
 
 class GamesListAdapter : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>() {
@@ -24,7 +27,13 @@ class GamesListAdapter : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GamesViewHolder {
-        return GamesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.menu_list_row, parent, false))
+        return GamesViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.menu_list_row,
+                parent,
+                false
+            )
+        )
     }
 
     class GamesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -40,7 +49,11 @@ class GamesListAdapter : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>(
     override fun onBindViewHolder(holder: GamesViewHolder, position: Int) {
         val element = games[position]
         holder.name.text = element.name
-        holder.image.setImageBitmap(decodeImage(element.photo))
+        holder.image.setImageBitmap(
+            decodeImage(
+                element.photo
+            )
+        )
         holder.image.clipToOutline = true
         holder.favourite.isChecked = games[position].favourite
         holder.itemView.setOnClickListener {

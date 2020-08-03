@@ -1,4 +1,4 @@
-package com.lukaszgalinski.gamefuture
+package com.lukaszgalinski.gamefuture.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,9 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lukaszgalinski.gamefuture.database.GamesModel
-import com.lukaszgalinski.gamefuture.database.GamesDatabase
-import com.lukaszgalinski.gamefuture.database.changeFavouriteStatus
+import com.lukaszgalinski.gamefuture.view.callbacks.GameClickListener
+import com.lukaszgalinski.gamefuture.view.adapters.GamesListAdapter
+import com.lukaszgalinski.gamefuture.R
+import com.lukaszgalinski.gamefuture.models.GamesModel
+import com.lukaszgalinski.gamefuture.repositories.database.GamesDatabase
+import com.lukaszgalinski.gamefuture.repositories.database.changeFavouriteStatus
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -34,13 +37,17 @@ class FavouritesActivity: AppCompatActivity() {
     }
 
     private fun buildRecyclerView(){
-        val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(this, GRID_SPAN_COUNT)
+        val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(this,
+            GRID_SPAN_COUNT
+        )
         favourites_list.apply { layoutManager = mLayoutManager }
-        favouritesAdapter = GamesListAdapter()
+        favouritesAdapter =
+            GamesListAdapter()
         favourites_list.adapter = favouritesAdapter
         favouritesCompositeDisposable = CompositeDisposable()
 
-        favouritesAdapter.setOnItemClickListener(object : GameClickListener {
+        favouritesAdapter.setOnItemClickListener(object :
+            GameClickListener {
             override fun onRecyclerItemPressed(position: Int) {
                 val intent = Intent(this@FavouritesActivity, GameDetailsActivity::class.java)
                 val itemId = favouritesAdapter.games[position].id - 1
@@ -51,7 +58,12 @@ class FavouritesActivity: AppCompatActivity() {
 
             override fun onFavouriteClick(position: Int, status: Boolean) {
                 sendBroadCastWithId(position, status)
-                val changeStatusDisposable = changeFavouriteStatus(this@FavouritesActivity, position, status)
+                val changeStatusDisposable =
+                    changeFavouriteStatus(
+                        this@FavouritesActivity,
+                        position,
+                        status
+                    )
                 changeStatusDisposable.addTo(favouritesCompositeDisposable)
             }
         })

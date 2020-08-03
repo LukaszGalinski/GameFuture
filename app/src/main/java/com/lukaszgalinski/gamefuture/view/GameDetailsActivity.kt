@@ -1,4 +1,4 @@
-package com.lukaszgalinski.gamefuture
+package com.lukaszgalinski.gamefuture.view
 
 import android.os.Bundle
 import android.view.View
@@ -11,7 +11,9 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.lukaszgalinski.gamefuture.cardsfragments.FragmentsAdapter
+import com.lukaszgalinski.gamefuture.R
+import com.lukaszgalinski.gamefuture.view.adapters.FragmentsAdapter
+import com.lukaszgalinski.gamefuture.view.adapters.GallerySliderAdapter
 import kotlin.math.abs
 
 private const val GAME_ID_LABEL = "gameIdLabel"
@@ -33,28 +35,50 @@ class GameDetailsActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_details_layout)
         val gameId = intent.extras?.getInt(GAME_ID_LABEL)
-        println("gameId: $gameId")
         buildFragmentCards()
         buildGallery()
     }
 
     private fun buildGallery(){
-        galleryToolbar = findViewById(R.id.tabGallery)
-        galleryPager = findViewById(R.id.gallery)
+        galleryToolbar = findViewById(
+            R.id.tabGallery
+        )
+        galleryPager = findViewById(
+            R.id.gallery
+        )
         //load data from the database - to be done
-        val galleryImagesList = arrayListOf(R.drawable.acoddysey, R.drawable.acwallhalla, R.drawable.cabal)
-        val galleryAdapter = GallerySliderAdapter(this, galleryImagesList)
+        val galleryImagesList = arrayListOf(
+            R.drawable.acoddysey,
+            R.drawable.acwallhalla,
+            R.drawable.cabal
+        )
+        val galleryAdapter =
+            GallerySliderAdapter(
+                this,
+                galleryImagesList
+            )
         galleryPager.adapter = galleryAdapter
         createViewPagerAnimation(galleryPager)
-        buildGalleryToolbar(galleryPager, galleryToolbar, galleryImagesList)
+        buildGalleryToolbar(
+            galleryPager,
+            galleryToolbar, galleryImagesList)
     }
 
     private fun buildFragmentCards() {
-        cardsPager = findViewById(R.id.games_viewPager)
-        cardsToolbar = findViewById(R.id.tabLayout)
-        fragmentsAdapter = FragmentsAdapter(this)
-        cardsPager.adapter = fragmentsAdapter
-        TabLayoutMediator(cardsToolbar, cardsPager) { tab, position ->
+        cardsPager = findViewById(
+            R.id.games_viewPager
+        )
+        cardsToolbar = findViewById(
+            R.id.tabLayout
+        )
+        fragmentsAdapter =
+            FragmentsAdapter(this)
+        cardsPager.adapter =
+            fragmentsAdapter
+        TabLayoutMediator(
+            cardsToolbar,
+            cardsPager
+        ) { tab, position ->
             when (position) {
                 0 -> {
                     tab.text = resources.getString(R.string.details_description)
@@ -87,19 +111,25 @@ class GameDetailsActivity : FragmentActivity() {
     private fun buildGalleryToolbar(pager: ViewPager2, tabLayout: TabLayout, imagesArray: ArrayList<Int>) {
         TabLayoutMediator(tabLayout, pager) { tab, position ->
             val customBackgroundLayout =
-                View.inflate(this, R.layout.gallery_layout, null)
+                View.inflate(this,
+                    R.layout.gallery_layout, null)
             val imageBackground =
                 customBackgroundLayout.findViewById<ImageView>(R.id.screens_gallery)
             imageBackground.setImageResource(imagesArray[position])
             imageBackground.scaleType = ImageView.ScaleType.FIT_XY
-            tab.view.alpha = UNSELECTED_IMAGE_ALPHA
+            tab.view.alpha =
+                UNSELECTED_IMAGE_ALPHA
             tab.customView = customBackgroundLayout
         }.attach()
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
-            override fun onTabUnselected(tab: TabLayout.Tab?) { tab?.view?.alpha = UNSELECTED_IMAGE_ALPHA }
-            override fun onTabSelected(tab: TabLayout.Tab?) { tab?.view?.alpha = SELECTED_IMAGE_ALPHA }
+            override fun onTabUnselected(tab: TabLayout.Tab?) { tab?.view?.alpha =
+                UNSELECTED_IMAGE_ALPHA
+            }
+            override fun onTabSelected(tab: TabLayout.Tab?) { tab?.view?.alpha =
+                SELECTED_IMAGE_ALPHA
+            }
         })
     }
 

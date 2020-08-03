@@ -1,7 +1,8 @@
-package com.lukaszgalinski.gamefuture
+package com.lukaszgalinski.gamefuture.repositories.network
 
 import android.content.Context
 import android.util.Log
+import com.lukaszgalinski.gamefuture.R
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
@@ -17,17 +18,30 @@ class HttpHandler(private val context: Context){
         try {
             val url = URL(reqUrl)
             val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            connection.requestMethod = GET_METHOD
+            connection.requestMethod =
+                GET_METHOD
             val inputStream: InputStream = BufferedInputStream(connection.inputStream)
             response = streamToString(inputStream)
         } catch (e: MalformedURLException) {
-            Log.e(TAG,  context.resources.getString(R.string.loading_malformedException) + e.message);
+            Log.e(
+                TAG,  context.resources.getString(
+                    R.string.loading_malformedException
+                ) + e.message);
         } catch (e: ProtocolException) {
-            Log.e(TAG, context.resources.getString(R.string.loading_protocolException)  + e.message);
+            Log.e(
+                TAG, context.resources.getString(
+                    R.string.loading_protocolException
+                )  + e.message);
         } catch (e: IOException) {
-            Log.e(TAG, context.resources.getString(R.string.loading_ioException)  + e.message);
+            Log.e(
+                TAG, context.resources.getString(
+                    R.string.loading_ioException
+                )  + e.message);
         } catch (e: Exception) {
-            Log.e(TAG, context.resources.getString(R.string.loading_exception) + e.message);
+            Log.e(
+                TAG, context.resources.getString(
+                    R.string.loading_exception
+                ) + e.message);
         }
         return response
     }

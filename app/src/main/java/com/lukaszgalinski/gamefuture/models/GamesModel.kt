@@ -1,4 +1,4 @@
-package com.lukaszgalinski.gamefuture.database
+package com.lukaszgalinski.gamefuture.models
 
 import androidx.room.*
 @Entity(tableName = "Games", indices = [Index(value = ["gameId"], unique = true)])

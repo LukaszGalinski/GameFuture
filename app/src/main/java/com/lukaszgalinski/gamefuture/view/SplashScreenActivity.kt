@@ -1,10 +1,11 @@
-package com.lukaszgalinski.gamefuture
+package com.lukaszgalinski.gamefuture.view
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.lukaszgalinski.gamefuture.R
 import kotlinx.android.synthetic.main.splash_screen.*
 import java.util.*
 
@@ -17,7 +18,9 @@ class SplashScreenActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen)
-        timeLeft = savedInstanceState?.getLong(TIME_LEFT_LABEL) ?: SPLASH_SCREEN_DEFAULT_TIME
+        timeLeft = savedInstanceState?.getLong(
+            TIME_LEFT_LABEL
+        ) ?: SPLASH_SCREEN_DEFAULT_TIME
         setShadowOnTextButton(splash_skip)
     }
 
@@ -42,7 +45,10 @@ class SplashScreenActivity: AppCompatActivity() {
         screenChangeHandler.removeCallbacksAndMessages(null)
         val timeEnd = Calendar.getInstance().timeInMillis
         timeLeft -= (timeEnd - startTime)
-        outState.putLong(TIME_LEFT_LABEL, timeLeft)
+        outState.putLong(
+            TIME_LEFT_LABEL,
+            timeLeft
+        )
     }
 
     override fun onResume() {

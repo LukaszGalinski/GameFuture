@@ -1,4 +1,4 @@
-package com.lukaszgalinski.gamefuture
+package com.lukaszgalinski.gamefuture.view.callbacks
 
 interface GameClickListener {
     fun onRecyclerItemPressed(position: Int)

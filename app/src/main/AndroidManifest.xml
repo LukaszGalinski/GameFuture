@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".view.SplashScreenActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -19,13 +19,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainMenuActivity"
+            android:name=".view.MainMenuActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
-            android:name=".GameDetailsActivity"
+            android:name=".view.GameDetailsActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
-            android:name=".FavouritesActivity"
+            android:name=".view.FavouritesActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 </manifest>

@@ -1,4 +1,4 @@
-package com.lukaszgalinski.gamefuture.database
+package com.lukaszgalinski.gamefuture.repositories.database
 
 import android.content.Context
 import android.util.Log
@@ -11,7 +11,9 @@ import io.reactivex.schedulers.Schedulers
 private const val CHANGE_FAVOURITE_STATUS_TAG = "Favourite status change"
 fun changeFavouriteStatus(context: Context, position: Int, status: Boolean): Disposable{
     return Observable.fromCallable {
-        (GamesDatabase.loadInstance(context).gamesDao()
+        (GamesDatabase.loadInstance(
+            context
+        ).gamesDao()
             .changeFavouriteStatus(position, status))
     }
         .subscribeOn(Schedulers.io())
@@ -29,4 +31,8 @@ fun changeFavouriteStatus(context: Context, position: Int, status: Boolean): Dis
         }
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe()
+}
+
+fun loadSingleRowData(context: Context, position: Int){
+
 }

@@ -1,9 +1,10 @@
-package com.lukaszgalinski.gamefuture.database
+package com.lukaszgalinski.gamefuture.repositories.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.lukaszgalinski.gamefuture.models.GamesModel
 
 private const val DATABASE_VERSION = 1
 private const val DATABASE_NAME = "GamesDatabase"
@@ -18,8 +19,7 @@ abstract class GamesDatabase: RoomDatabase() {
         fun loadInstance(context: Context): GamesDatabase {
             if (instance == null) {
                 synchronized(this) {
-                    instance =
-                        Room.databaseBuilder(context, GamesDatabase::class.java, DATABASE_NAME)
+                    instance = Room.databaseBuilder(context, GamesDatabase::class.java, DATABASE_NAME)
                             .fallbackToDestructiveMigration()
                             .build()
                 }

@@ -1,7 +1,8 @@
-package com.lukaszgalinski.gamefuture.database
+package com.lukaszgalinski.gamefuture.repositories.database
 
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
+import com.lukaszgalinski.gamefuture.models.GamesModel
 
 @Dao
 interface GamesDao {

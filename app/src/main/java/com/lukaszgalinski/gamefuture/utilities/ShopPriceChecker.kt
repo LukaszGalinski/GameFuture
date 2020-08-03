@@ -1,4 +1,4 @@
-package com.lukaszgalinski.gamefuture
+package com.lukaszgalinski.gamefuture.utilities
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
