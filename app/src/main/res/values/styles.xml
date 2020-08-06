@@ -21,6 +21,12 @@
         <item name="tabIndicatorColor">@color/lightGreen</item>
         <item name="colorPrimary">@color/lightGreen</item>
     </style>
+    <style name="AppTheme.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
 
    <!-- <style name="TextAppearance.App.Button" parent="TextAppearance.MaterialComponents.Button">
         <item name="fontFamily">@font/rubik</item>

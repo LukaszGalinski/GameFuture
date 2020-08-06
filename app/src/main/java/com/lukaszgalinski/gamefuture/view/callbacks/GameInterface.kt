@@ -2,7 +2,7 @@ package com.lukaszgalinski.gamefuture.view.callbacks
 
 interface GameClickListener {
     fun onRecyclerItemPressed(position: Int)
-    fun onFavouriteClick(position: Int, status: Boolean)
+    fun onFavouriteClick(gameId: Int, status: Boolean, position: Int)
 }
 
 

@@ -1,5 +1,6 @@
 package com.lukaszgalinski.gamefuture.view.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,10 @@ import com.lukaszgalinski.gamefuture.utilities.decodeImage
 import com.lukaszgalinski.gamefuture.view.callbacks.GameClickListener
 import kotlinx.android.synthetic.main.menu_list_row.view.*
 
-class GamesListAdapter : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>() {
+class GamesListAdapter(val context: Context) : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>() {
     private lateinit var gameClickListener: GameClickListener
 
-    var games: List<GamesModel> = arrayListOf()
+    var games : List<GamesModel> = arrayListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -28,7 +29,7 @@ class GamesListAdapter : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GamesViewHolder {
         return GamesViewHolder(
-            LayoutInflater.from(parent.context).inflate(
+            LayoutInflater.from(context).inflate(
                 R.layout.menu_list_row,
                 parent,
                 false
@@ -60,7 +61,7 @@ class GamesListAdapter : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>(
             gameClickListener.onRecyclerItemPressed(position)
         }
         holder.favourite.setOnClickListener{
-            gameClickListener.onFavouriteClick(games[position].id, holder.favourite.isChecked)
+            gameClickListener.onFavouriteClick(games[position].id, holder.favourite.isChecked, position)
         }
     }
 }
