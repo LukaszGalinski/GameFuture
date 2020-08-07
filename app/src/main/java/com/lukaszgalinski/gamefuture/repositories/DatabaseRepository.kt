@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.lukaszgalinski.gamefuture.models.GamesModel
+import com.lukaszgalinski.gamefuture.repositories.database.GamesDao
 import com.lukaszgalinski.gamefuture.repositories.database.GamesDatabase
 import com.lukaszgalinski.gamefuture.repositories.network.HttpHandler
 import com.lukaszgalinski.gamefuture.repositories.network.loadDataFromHTTP
@@ -42,12 +43,17 @@ class DatabaseRepository {
         dataSet = ArrayList()
         val database = GamesDatabase.loadInstance(context = context).gamesDao()
         if (calculateTimeFromLastDataUpdate(context) > DEFAULT_UPDATE_TIME) {
-            dataSet = loadDataFromHTTP(context)
-            database.insertAll(dataSet)
-            setUpdateTimeInSP(context)
+            updateDataFromHttp(context, database)
         } else {
             dataSet = database.loadAll() as ArrayList<GamesModel>
         }
+    }
+
+    private fun updateDataFromHttp(context: Context, database: GamesDao){
+        dataSet = loadDataFromHTTP(context)
+        val time = Calendar.getInstance().timeInMillis
+        setUpdateTimeInSP(context, time)
+        database.insertAll(dataSet)
     }
 
     fun filterData(data: MutableLiveData<List<GamesModel>>?, query: String, context: Context): MutableLiveData<List<GamesModel>>?{
@@ -66,7 +72,6 @@ class DatabaseRepository {
         }
             .subscribeOn(Schedulers.io())
             .doOnError { Log.w(CHANGE_FAVOURITE_STATUS_TAG,": " + it.message) }
-            .doOnComplete { Log.w(CHANGE_FAVOURITE_STATUS_TAG,": " + "success") }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
     }
@@ -77,8 +82,7 @@ class DatabaseRepository {
         return (date1.time - date2) / MILLISECOND_IN_SECOND
     }
 
-    private fun setUpdateTimeInSP(context: Context) {
-        val time = Calendar.getInstance().timeInMillis
+    fun setUpdateTimeInSP(context: Context, time: Long) {
         val sharedPreferences = context.getSharedPreferences(LAST_UPDATE_TIME_LABEL, Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         editor.putLong(LAST_UPDATE_TIME_LABEL, time)

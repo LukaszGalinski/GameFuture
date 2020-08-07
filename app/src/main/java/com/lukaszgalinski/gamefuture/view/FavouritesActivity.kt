@@ -1,12 +1,19 @@
 package com.lukaszgalinski.gamefuture.view
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
+import android.view.Window
+import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lukaszgalinski.gamefuture.view.callbacks.GameClickListener
 import com.lukaszgalinski.gamefuture.view.adapters.GamesListAdapter
 import com.lukaszgalinski.gamefuture.R
@@ -29,6 +36,7 @@ class FavouritesActivity: AppCompatActivity() {
     private lateinit var favouritesAdapter: GamesListAdapter
     private lateinit var favouritesViewModel: FavouritesViewModel
     private lateinit var localBroadcastManager: LocalBroadcastManager
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +51,7 @@ class FavouritesActivity: AppCompatActivity() {
         })
         buildRecyclerView()
         loadFavouriteGames()
+        buildBottomNavigationBar()
     }
 
     private fun buildRecyclerView(){
@@ -94,7 +103,47 @@ class FavouritesActivity: AppCompatActivity() {
             showMessage()
         }
         favouritesAdapter.games = favouriteData
+    }
 
+    private fun buildBottomNavigationBar(){
+        val parent: View = findViewById(R.id.navigation_bar)
+        bottomNavigationView = parent.findViewById(R.id.bottom_navigation)
+        bottomNavigationView.selectedItemId = R.id.favourites_btn
+        bottomNavigationView.setOnNavigationItemSelectedListener{
+            when (it.itemId) {
+                R.id.home_btn -> {
+                    finish()
+                }
+                R.id.update_btn -> {
+                    favouritesViewModel.forceDataUpdating(this)
+                    Toast.makeText(this, resources.getString(R.string.data_updated), Toast.LENGTH_SHORT).show()}
+                R.id.favourites_btn -> {}
+                R.id.exit_btn -> {
+                    showConfirmationAlert()
+                }
+            }
+            true
+        }
+    }
+
+    private fun showConfirmationAlert(){
+        val alert = Dialog(this)
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        alert.setCanceledOnTouchOutside(true)
+        alert.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alert.setContentView(R.layout.alert_leave)
+        val positiveButton = alert.findViewById<Button>(R.id.confirm)
+        val negativeButton = alert.findViewById<Button>(R.id.cancel)
+        positiveButton.setOnClickListener{
+            alert.dismiss()
+            finishAffinity()
+        }
+        negativeButton.setOnClickListener {
+            alert.dismiss()
+            bottomNavigationView.selectedItemId = R.id.favourites_btn
+        }
+        alert.setOnCancelListener { bottomNavigationView.selectedItemId = R.id.favourites_btn }
+        alert.show()
     }
 
     private fun showProgressBar(){

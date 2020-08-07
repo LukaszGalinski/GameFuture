@@ -20,6 +20,7 @@ class ShopFragmentActivity: Fragment() {
 
     companion object {
         fun newInstance(): ShopFragmentActivity {
+            println("nowa shop")
             return ShopFragmentActivity()
         }
     }

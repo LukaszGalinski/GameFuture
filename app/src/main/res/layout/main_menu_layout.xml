@@ -6,42 +6,12 @@
     android:background="@drawable/background"
     android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/menu_toggle_btn"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:alpha="0.8"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/toggle_menu"
-        android:src="@drawable/ic_baseline_menu_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/exit"
-        app:layout_constraintHeight_percent="0.1"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.15" />
-
-    <ImageButton
-        android:id="@+id/exit"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:alpha="0.8"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/toggle_menu"
-        android:src="@drawable/ic_baseline_menu_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/menu_favourites"
-        app:layout_constraintHeight_percent="0.1"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/menu_toggle_btn"
-        app:layout_constraintWidth_percent="0.15" />
-
     <EditText
         android:id="@+id/menuSearchBar"
         android:layout_width="0dp"
         android:layout_height="@dimen/search_bar_height"
         android:autofillHints="@string/search_for_a_game"
-        android:background="@color/lightGreenQuarterTransparent"
+        android:background="@drawable/search_bar_rounded"
         android:drawableStart="@drawable/search_icon"
         android:drawablePadding="@dimen/menu_edit_text_drawable_padding"
         android:hint="@string/search_for_a_game"
@@ -53,22 +23,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.7" />
-
-    <ImageButton
-        android:id="@+id/menu_favourites"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:alpha="0.8"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/favourites"
-        android:src="@drawable/ic_baseline_star_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/exit"
-        app:layout_constraintHeight_percent="0.1"
-        app:layout_constraintWidth_percent=".15" />
+        app:layout_constraintWidth_percent="0.8" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/menu_recycler"
@@ -77,7 +32,7 @@
         android:layout_marginTop="@dimen/menu_default_margin"
         android:background="@android:color/transparent"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintHeight_percent=".82"
+        app:layout_constraintHeight_percent=".84"
         app:layout_constraintTop_toBottomOf="@id/menuSearchBar"
         app:spanCount="2" />
 
@@ -90,11 +45,9 @@
         app:layout_constraintEnd_toEndOf="@id/menu_recycler"
         app:layout_constraintStart_toStartOf="@id/menu_recycler"
         app:layout_constraintTop_toBottomOf="@+id/menuSearchBar" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/quarterTransparent"/>
+
+<include
+    android:id="@+id/navigation_bar"
+    layout="@layout/navigation_bar_bottom"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

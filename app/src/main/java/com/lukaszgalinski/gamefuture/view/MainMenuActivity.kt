@@ -1,26 +1,21 @@
 package com.lukaszgalinski.gamefuture.view
 
 import android.app.Dialog
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Gravity
+import android.view.View
 import android.view.Window
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.ActionBarDrawerToggle
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lukaszgalinski.gamefuture.R
 import com.lukaszgalinski.gamefuture.models.GamesModel
 import com.lukaszgalinski.gamefuture.utilities.decodeImage
@@ -39,7 +34,7 @@ private const val BROADCAST_PASS_STATUS = "passStatus"
 
 class MainMenuActivity: SearchActivity() {
     private lateinit var compositeDisposable: CompositeDisposable
-
+    private lateinit var bottomNavigationView: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_menu_layout)
@@ -50,17 +45,7 @@ class MainMenuActivity: SearchActivity() {
             gamesListAdapter.notifyDataSetChanged()
         })
         buildRecyclerView()
-
-        menu_favourites.setOnClickListener {
-            startActivity(Intent(this, FavouritesActivity::class.java))
-        }
-
-        val drawerLayout = findViewById<DrawerLayout>(R.id.drawerMenu)
-        val btn = findViewById<ImageButton>(R.id.menu_toggle_btn)
-        btn.setOnClickListener {
-            println("casted")
-                drawerLayout.openDrawer(GravityCompat.START);
-        }
+        buildBottomNavigationBar()
     }
 
     private fun loadInitialData(){
@@ -125,11 +110,54 @@ class MainMenuActivity: SearchActivity() {
         }
     }
 
+    private fun buildBottomNavigationBar(){
+        val parent: View = findViewById(R.id.navigation_bar)
+        bottomNavigationView = parent.findViewById(R.id.bottom_navigation)
+        bottomNavigationView.setOnNavigationItemSelectedListener{
+            when (it.itemId) {
+                R.id.home_btn -> {}
+                R.id.update_btn -> {
+                    mMainMenuViewModel.forceDataUpdating(this)
+                    recreate()
+                    Toast.makeText(this, resources.getString(R.string.data_updated), Toast.LENGTH_SHORT).show()}
+                R.id.favourites_btn -> {
+                    startActivity(Intent(this, FavouritesActivity::class.java))
+                }
+                R.id.exit_btn -> {
+                    showConfirmationAlert()
+                }
+            }
+            true
+        }
+    }
+
+    private fun showConfirmationAlert(){
+        val alert = Dialog(this)
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        alert.setCanceledOnTouchOutside(true)
+        alert.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alert.setContentView(R.layout.alert_leave)
+        val positiveButton = alert.findViewById<Button>(R.id.confirm)
+        val negativeButton = alert.findViewById<Button>(R.id.cancel)
+        positiveButton.setOnClickListener{
+            alert.dismiss()
+            finish()
+        }
+        negativeButton.setOnClickListener {
+            alert.dismiss()
+            bottomNavigationView.selectedItemId = R.id.home_btn
+        }
+
+        alert.setOnCancelListener {
+            bottomNavigationView.selectedItemId = R.id.home_btn
+        }
+        alert.show()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         compositeDisposable.dispose()
     }
-
 
     override fun onPause() {
         super.onPause()
@@ -138,6 +166,7 @@ class MainMenuActivity: SearchActivity() {
 
     override fun onResume() {
         super.onResume()
+        bottomNavigationView.selectedItemId = R.id.home_btn
         LocalBroadcastManager.getInstance(this).registerReceiver(setFavouritesBroadcastReceiver(), IntentFilter(FAVOURITES_CHANGED_BROADCAST))
     }
 }

@@ -38,5 +38,9 @@
         android:visibility="gone"
         style="@style/textShadowOverlay"
         android:text="@string/no_data_to_show"
-        android:textSize="18sp"/>
+        android:textSize="@dimen/alert_price_text_size"/>
+
+    <include
+        android:id="@+id/navigation_bar"
+        layout="@layout/navigation_bar_bottom"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

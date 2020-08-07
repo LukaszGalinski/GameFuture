@@ -19,6 +19,7 @@ class DescriptionFragmentActivity : Fragment() {
 
     companion object {
         fun newInstance(): DescriptionFragmentActivity {
+            println("nowa description")
             return DescriptionFragmentActivity()
         }
     }
