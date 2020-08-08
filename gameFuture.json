@@ -1,5 +1,4 @@
-{
-  "games": [
+[
     {
       "name": "Sekiro: Shadows Die Twice",
       "category": "przygodowe, gry akcji, TPP, fantasy",
@@ -79,4 +78,3 @@
       "video": "video"
     }
   ]
-}
