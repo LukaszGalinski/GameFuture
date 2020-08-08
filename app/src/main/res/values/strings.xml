@@ -38,4 +38,6 @@
     <string name="leave_confirmation_title">Are you sure you want to leave?</string>
     <string name="leave_confirmation_subtitle">The app will be closed&#8230;</string>
     <string name="data_updated">Games list has been updated</string>
+    <string name="data_updating">Games update in progress</string>
+    <string name="data_updating_done">Done!</string>
 </resources>

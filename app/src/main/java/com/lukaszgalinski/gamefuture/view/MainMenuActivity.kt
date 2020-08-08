@@ -5,6 +5,7 @@ import android.content.*
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Button
@@ -31,6 +32,7 @@ import kotlinx.android.synthetic.main.main_menu_layout.*
 private const val FAVOURITES_CHANGED_BROADCAST = "favouritesChangedBroadcast"
 private const val BROADCAST_PASS_ID = "passId"
 private const val BROADCAST_PASS_STATUS = "passStatus"
+private const val ROOM_TAG = "Room: "
 
 class MainMenuActivity: SearchActivity() {
     private lateinit var compositeDisposable: CompositeDisposable
@@ -54,12 +56,11 @@ class MainMenuActivity: SearchActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext { showProgressBar() }
             .subscribeOn(Schedulers.io())
-            .map {  mMainMenuViewModel.getGamesList()?.value!! }
+            .map { mMainMenuViewModel.getGamesList()?.value!! }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 hideProgressBar()
                 gamesListAdapter.games = it
-
             }
         compositeDisposable.add(disposableFavourites)
     }
@@ -117,9 +118,8 @@ class MainMenuActivity: SearchActivity() {
             when (it.itemId) {
                 R.id.home_btn -> {}
                 R.id.update_btn -> {
-                    mMainMenuViewModel.forceDataUpdating(this)
-                    recreate()
-                    Toast.makeText(this, resources.getString(R.string.data_updated), Toast.LENGTH_SHORT).show()}
+                    forceDataUpdating()
+                }
                 R.id.favourites_btn -> {
                     startActivity(Intent(this, FavouritesActivity::class.java))
                 }
@@ -152,6 +152,23 @@ class MainMenuActivity: SearchActivity() {
             bottomNavigationView.selectedItemId = R.id.home_btn
         }
         alert.show()
+    }
+
+    private fun forceDataUpdating(){
+        showProgressBar()
+        Toast.makeText(this, resources.getString(R.string.data_updating), Toast.LENGTH_SHORT).show()
+        val forceUpdateDisposable = Observable.fromCallable { mMainMenuViewModel.forceDataUpdating(this) }
+            .subscribeOn(Schedulers.io())
+            .doOnError { Log.w(ROOM_TAG,": " + "inserted") }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete{
+                bottomNavigationView.selectedItemId = R.id.home_btn
+                hideProgressBar()
+                Toast.makeText(this, resources.getString(R.string.data_updating_done), Toast.LENGTH_SHORT).show()
+            }
+            .map { gamesListAdapter.games = it }
+            .subscribe()
+        compositeDisposable.add(forceUpdateDisposable)
     }
 
     override fun onDestroy() {

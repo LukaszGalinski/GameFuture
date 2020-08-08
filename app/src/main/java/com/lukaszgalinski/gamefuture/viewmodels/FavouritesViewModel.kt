@@ -8,7 +8,6 @@ import com.lukaszgalinski.gamefuture.models.GamesModel
 import com.lukaszgalinski.gamefuture.repositories.DatabaseRepository
 import io.reactivex.disposables.Disposable
 
-private const val DEFAULT_UPDATE_TIME = 7*24*60*60L
 class FavouritesViewModel: ViewModel() {
     private var gamesLiveData: MutableLiveData<List<GamesModel>>? = null
     private var mRepo: DatabaseRepository? = null
@@ -30,8 +29,9 @@ class FavouritesViewModel: ViewModel() {
         return mRepo?.changeFavouriteStatus(context, gameId, status)
     }
 
-    fun forceDataUpdating(context: Context){
-        val time = DEFAULT_UPDATE_TIME+1
-        mRepo?.setUpdateTimeInSP(context, time)
+    fun forceDataUpdating(context: Context): ArrayList<GamesModel>?{
+        val data = mRepo?.updateDataFromHttp(context)
+        gamesLiveData?.postValue(data)
+        return data
     }
 }

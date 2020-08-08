@@ -14,7 +14,7 @@ interface GamesDao {
     fun filterGamesByName(name: String): List<GamesModel>
 
     @Insert(onConflict = REPLACE)
-    fun insertAll(games: List<GamesModel>)
+    fun insertAll(games: List<GamesModel>): List<Long>
 
     @Query("SELECT * FROM games WHERE favourite = 1")
     fun getFavouriteList(): List<GamesModel>

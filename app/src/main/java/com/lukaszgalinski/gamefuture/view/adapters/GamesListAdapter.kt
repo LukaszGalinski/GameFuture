@@ -61,7 +61,7 @@ class GamesListAdapter(val context: Context) : RecyclerView.Adapter<GamesListAda
             gameClickListener.onRecyclerItemPressed(position)
         }
         holder.favourite.setOnClickListener{
-            gameClickListener.onFavouriteClick(games[position].id, holder.favourite.isChecked, position)
+            gameClickListener.onFavouriteClick(games[position].gameId, holder.favourite.isChecked, position)
         }
     }
 }

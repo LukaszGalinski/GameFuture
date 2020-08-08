@@ -49,8 +49,9 @@ class MainMenuViewModel : ViewModel(){
         gamesLiveData?.value!![position].favourite = status
     }
 
-    fun forceDataUpdating(context: Context){
-        val time = DEFAULT_UPDATE_TIME+1
-        mRepo?.setUpdateTimeInSP(context, time)
+    fun forceDataUpdating(context: Context): ArrayList<GamesModel>? {
+        val data = mRepo?.updateDataFromHttp(context)
+        gamesLiveData?.postValue(data)
+        return data
     }
 }

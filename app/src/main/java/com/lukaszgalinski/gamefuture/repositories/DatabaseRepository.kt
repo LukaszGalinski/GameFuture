@@ -5,10 +5,8 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.lukaszgalinski.gamefuture.models.GamesModel
-import com.lukaszgalinski.gamefuture.repositories.database.GamesDao
 import com.lukaszgalinski.gamefuture.repositories.database.GamesDatabase
-import com.lukaszgalinski.gamefuture.repositories.network.HttpHandler
-import com.lukaszgalinski.gamefuture.repositories.network.loadDataFromHTTP
+import com.lukaszgalinski.gamefuture.repositories.network.NetworkLoading
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -41,19 +39,19 @@ class DatabaseRepository {
 
     private fun setGames(context: Context) {
         dataSet = ArrayList()
-        val database = GamesDatabase.loadInstance(context = context).gamesDao()
         if (calculateTimeFromLastDataUpdate(context) > DEFAULT_UPDATE_TIME) {
-            updateDataFromHttp(context, database)
+            updateDataFromHttp(context)
         } else {
-            dataSet = database.loadAll() as ArrayList<GamesModel>
+            dataSet = GamesDatabase.loadInstance(context = context).gamesDao().loadAll() as ArrayList<GamesModel>
         }
     }
 
-    private fun updateDataFromHttp(context: Context, database: GamesDao){
-        dataSet = loadDataFromHTTP(context)
+    fun updateDataFromHttp(context: Context): ArrayList<GamesModel> {
         val time = Calendar.getInstance().timeInMillis
         setUpdateTimeInSP(context, time)
-        database.insertAll(dataSet)
+        dataSet = NetworkLoading().loadHttpData() as ArrayList<GamesModel>
+        GamesDatabase.loadInstance(context = context).gamesDao().insertAll(dataSet)
+        return dataSet
     }
 
     fun filterData(data: MutableLiveData<List<GamesModel>>?, query: String, context: Context): MutableLiveData<List<GamesModel>>?{
@@ -68,7 +66,7 @@ class DatabaseRepository {
 
     fun changeFavouriteStatus(context: Context, position: Int, status: Boolean): Disposable {
         return Observable.fromCallable {
-            (GamesDatabase.loadInstance(context).gamesDao().changeFavouriteStatus(position, status))
+            GamesDatabase.loadInstance(context).gamesDao().changeFavouriteStatus(position, status)
         }
             .subscribeOn(Schedulers.io())
             .doOnError { Log.w(CHANGE_FAVOURITE_STATUS_TAG,": " + it.message) }
@@ -82,7 +80,7 @@ class DatabaseRepository {
         return (date1.time - date2) / MILLISECOND_IN_SECOND
     }
 
-    fun setUpdateTimeInSP(context: Context, time: Long) {
+    private fun setUpdateTimeInSP(context: Context, time: Long) {
         val sharedPreferences = context.getSharedPreferences(LAST_UPDATE_TIME_LABEL, Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         editor.putLong(LAST_UPDATE_TIME_LABEL, time)

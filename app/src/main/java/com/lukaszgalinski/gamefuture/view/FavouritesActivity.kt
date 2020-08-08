@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Button
@@ -30,6 +31,7 @@ private const val FAVOURITES_CHANGED_BROADCAST = "favouritesChangedBroadcast"
 private const val BROADCAST_PASS_ID = "passId"
 private const val BROADCAST_PASS_STATUS = "passStatus"
 private const val GAME_ID_LABEL = "gameIdLabel"
+private const val ROOM_TAG = "Room: "
 
 class FavouritesActivity: AppCompatActivity() {
     private lateinit var favouritesCompositeDisposable: CompositeDisposable
@@ -60,7 +62,7 @@ class FavouritesActivity: AppCompatActivity() {
         favouritesAdapter.setOnItemClickListener(object : GameClickListener {
             override fun onRecyclerItemPressed(position: Int) {
                 val intent = Intent(this@FavouritesActivity, GameDetailsActivity::class.java)
-                val itemId = favouritesAdapter.games[position].id - 1
+                val itemId = favouritesAdapter.games[position].gameId - 1
                 intent.putExtra(GAME_ID_LABEL, itemId)
                 finish()
                 startActivity(intent)
@@ -115,8 +117,8 @@ class FavouritesActivity: AppCompatActivity() {
                     finish()
                 }
                 R.id.update_btn -> {
-                    favouritesViewModel.forceDataUpdating(this)
-                    Toast.makeText(this, resources.getString(R.string.data_updated), Toast.LENGTH_SHORT).show()}
+                    forceDataUpdating()
+                }
                 R.id.favourites_btn -> {}
                 R.id.exit_btn -> {
                     showConfirmationAlert()
@@ -144,6 +146,22 @@ class FavouritesActivity: AppCompatActivity() {
         }
         alert.setOnCancelListener { bottomNavigationView.selectedItemId = R.id.favourites_btn }
         alert.show()
+    }
+
+    private fun forceDataUpdating(){
+        showProgressBar()
+        Toast.makeText(this, resources.getString(R.string.data_updating), Toast.LENGTH_SHORT).show()
+        val forceUpdateDisposable = Observable.fromCallable { favouritesViewModel.forceDataUpdating(this) }
+            .subscribeOn(Schedulers.io())
+            .doOnError { Log.w(ROOM_TAG,": " + "inserted") }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete{
+                bottomNavigationView.selectedItemId = R.id.home_btn
+                hideProgressBar()
+                Toast.makeText(this, resources.getString(R.string.data_updating_done), Toast.LENGTH_SHORT).show()
+            }
+            .subscribe()
+        favouritesCompositeDisposable.add(forceUpdateDisposable)
     }
 
     private fun showProgressBar(){
