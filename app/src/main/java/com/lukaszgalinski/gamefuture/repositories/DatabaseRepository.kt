@@ -50,6 +50,10 @@ class DatabaseRepository {
         val time = Calendar.getInstance().timeInMillis
         setUpdateTimeInSP(context, time)
         dataSet = NetworkLoading().loadHttpData() as ArrayList<GamesModel>
+        for (i in dataSet.indices) {
+            val status = getSingleFavouriteElement(context, dataSet[i].gameId)
+            dataSet[i].favourite = status
+        }
         GamesDatabase.loadInstance(context = context).gamesDao().insertAll(dataSet)
         return dataSet
     }
@@ -72,6 +76,14 @@ class DatabaseRepository {
             .doOnError { Log.w(CHANGE_FAVOURITE_STATUS_TAG,": " + it.message) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
+    }
+
+    private fun getSingleFavouriteElement(context: Context, position: Int): Boolean{
+        return GamesDatabase.loadInstance(context).gamesDao().getFavouriteStatus(position)
+    }
+
+    fun getGame(context: Context, gameId: Int): GamesModel?{
+        return GamesDatabase.loadInstance(context).gamesDao().getSingleGame(gameId)
     }
 
     private fun calculateTimeFromLastDataUpdate(context: Context): Long {

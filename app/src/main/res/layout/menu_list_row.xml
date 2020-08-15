@@ -49,7 +49,6 @@
             android:layout_height="wrap_content"
             android:button="@drawable/custom_favourite_icon"
             android:contentDescription="@string/favourites"
-
             app:layout_constraintStart_toStartOf="@+id/row_image"
             app:layout_constraintTop_toTopOf="@id/row_image" />
     </androidx.constraintlayout.widget.ConstraintLayout>

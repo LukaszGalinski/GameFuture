@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -14,6 +15,15 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.lukaszgalinski.gamefuture.R
 import com.lukaszgalinski.gamefuture.view.adapters.FragmentsAdapter
 import com.lukaszgalinski.gamefuture.view.adapters.GallerySliderAdapter
+import com.lukaszgalinski.gamefuture.viewmodels.GameDetailsViewModel
+import io.reactivex.Observable
+import io.reactivex.Scheduler
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 import kotlin.math.abs
 
 private const val GAME_ID_LABEL = "gameIdLabel"
@@ -29,14 +39,28 @@ private lateinit var galleryToolbar: TabLayout
 private lateinit var fragmentsAdapter: FragmentsAdapter
 
 class GameDetailsActivity : FragmentActivity() {
-
+    private lateinit var gameDetailsViewModel : GameDetailsViewModel
     private val galleryMaxVisibleElements = 3
+    private val compositeDisposable = CompositeDisposable()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_details_layout)
         val gameId = intent.extras?.getInt(GAME_ID_LABEL)
         buildFragmentCards()
         buildGallery()
+        gameDetailsViewModel = ViewModelProvider(this).get(GameDetailsViewModel::class.java)
+        loadSingleData(gameId!!)
+    }
+
+    private fun loadSingleData(gameId: Int){
+        val singleElementLoadingObservable: Disposable = Single.fromCallable {
+            gameDetailsViewModel.instance(this, gameId)
+        }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+        compositeDisposable.add(singleElementLoadingObservable)
     }
 
     private fun buildGallery() {
@@ -57,35 +81,23 @@ class GameDetailsActivity : FragmentActivity() {
     }
 
     private fun buildFragmentCards() {
-        cardsPager = findViewById(
-            R.id.games_viewPager
-        )
-        cardsToolbar = findViewById(
-            R.id.tabLayout
-        )
+        cardsPager = findViewById(R.id.games_viewPager)
+        cardsToolbar = findViewById(R.id.tabLayout)
         fragmentsAdapter = FragmentsAdapter(this)
         cardsPager.adapter = fragmentsAdapter
-        TabLayoutMediator(
-            cardsToolbar, cardsPager
-        ) { tab, position ->
+        TabLayoutMediator(cardsToolbar, cardsPager) { tab, position ->
             when (position) {
                 0 -> {
                     tab.text = resources.getString(R.string.details_description)
-                    tab.icon = ResourcesCompat.getDrawable(
-                        resources, R.drawable.ic_baseline_text_fields_24, null
-                    )
+                    tab.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_text_fields_24, null)
                 }
                 1 -> {
                     tab.text = resources.getString(R.string.details_video)
-                    tab.icon = ResourcesCompat.getDrawable(
-                        resources, R.drawable.icon_camera, null
-                    )
+                    tab.icon = ResourcesCompat.getDrawable(resources, R.drawable.icon_camera, null)
                 }
                 2 -> {
                     tab.text = resources.getString(R.string.details_shop)
-                    tab.icon = ResourcesCompat.getDrawable(
-                        resources, R.drawable.ic_baseline_shopping_basket_24, null
-                    )
+                    tab.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_baseline_shopping_basket_24, null)
                 }
             }
         }.attach()
@@ -93,9 +105,7 @@ class GameDetailsActivity : FragmentActivity() {
 
     private fun buildGalleryToolbar(pager: ViewPager2, tabLayout: TabLayout, imagesArray: ArrayList<Int>) {
         TabLayoutMediator(tabLayout, pager) { tab, position ->
-            val customBackgroundLayout = View.inflate(
-                this, R.layout.gallery_layout, null
-            )
+            val customBackgroundLayout = View.inflate(this, R.layout.gallery_layout, null)
             val imageBackground = customBackgroundLayout.findViewById<ImageView>(R.id.screens_gallery)
             imageBackground.setImageResource(imagesArray[position])
             imageBackground.scaleType = ImageView.ScaleType.FIT_XY
@@ -125,5 +135,10 @@ class GameDetailsActivity : FragmentActivity() {
         viewPager.offscreenPageLimit = galleryMaxVisibleElements
         viewPager.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         viewPager.setPageTransformer(compositePageTransformer)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
     }
 }

@@ -13,6 +13,9 @@ interface GamesDao {
     @Query("SELECT * FROM games WHERE name LIKE :name")
     fun filterGamesByName(name: String): List<GamesModel>
 
+    @Query("SELECT * FROM games WHERE gameId = :gameId")
+    fun getSingleGame(gameId: Int): GamesModel
+
     @Insert(onConflict = REPLACE)
     fun insertAll(games: List<GamesModel>): List<Long>
 

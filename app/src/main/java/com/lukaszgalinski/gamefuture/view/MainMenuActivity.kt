@@ -33,6 +33,7 @@ private const val FAVOURITES_CHANGED_BROADCAST = "favouritesChangedBroadcast"
 private const val BROADCAST_PASS_ID = "passId"
 private const val BROADCAST_PASS_STATUS = "passStatus"
 private const val ROOM_TAG = "Room: "
+private const val GAME_ID_LABEL = "gameIdLabel"
 
 class MainMenuActivity: SearchActivity() {
     private lateinit var compositeDisposable: CompositeDisposable
@@ -93,9 +94,12 @@ class MainMenuActivity: SearchActivity() {
         val title = dialog.findViewById<TextView>(R.id.alert_title)
         title.text = item.name
         val moveForwardButton = dialog.findViewById<Button>(R.id.alert_move_forward)
+
         moveForwardButton.setOnClickListener {
             dialog.dismiss()
-            startActivity(Intent(this, GameDetailsActivity::class.java))
+            val intent = Intent(this, GameDetailsActivity::class.java)
+            intent.putExtra(GAME_ID_LABEL, item.gameId)
+            startActivity(intent)
         }
         dialog.show()
     }

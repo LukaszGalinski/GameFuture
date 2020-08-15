@@ -40,4 +40,5 @@
     <string name="data_updated">Games list has been updated</string>
     <string name="data_updating">Games update in progress</string>
     <string name="data_updating_done">Done!</string>
+    <string name="shop_logo">Shop logo</string>
 </resources>
