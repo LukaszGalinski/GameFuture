@@ -4,22 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
-    android:layout_marginTop="10dp">
+    android:layout_marginTop="@dimen/menu_default_margin">
 
     <TextView
         android:id="@+id/description_name"
-        style="@style/textShadowOverlay"
-        android:layout_width="226dp"
-        android:layout_height="26dp"
-        android:padding="5dp"
+        style="@style/textShadowOverlayWhite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="@dimen/menu_default_margin"
+        android:padding="5dp"
+        android:textSize="16sp"
         android:text="Name: Sekiro: Shadows Die Twice"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/description_producer"
-        style="@style/textShadowOverlay"
+        style="@style/textShadowOverlayWhite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -30,7 +33,7 @@
 
     <TextView
         android:id="@+id/description_category"
-        style="@style/textShadowOverlay"
+        style="@style/textShadowOverlayWhite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -41,11 +44,12 @@
 
     <TextView
         android:id="@+id/textView3"
-        style="@style/textShadowOverlay"
+        style="@style/textShadowOverlayWhite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:text="Ocena: "
+        android:layout_marginTop="@dimen/menu_default_margin"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/description_category"
         app:layout_constraintTop_toBottomOf="@+id/description_category" />
@@ -60,31 +64,18 @@
         android:rating="3"
         app:layout_constraintBottom_toBottomOf="@+id/textView3"
         app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/description_category" />
+        app:layout_constraintTop_toTopOf="@+id/textView3" />
 
     <TextView
         android:id="@+id/description_premiere"
-        style="@style/textShadowOverlay"
+        style="@style/textShadowOverlayWhite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:text="Data premiery"
-        android:textSize="16sp"
         android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
-
-    <TextView
-        android:id="@+id/description_premiere_date"
-        style="@style/textShadowOverlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:padding="5dp"
-        android:text="25 MARCA 2020"
-        android:textSize="23sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description_premiere" />
+        android:text="Data premiery: 25 marca 2020"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/description_name"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

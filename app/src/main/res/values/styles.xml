@@ -15,6 +15,15 @@
         <item name="android:shadowRadius">23</item>
     </style>
 
+    <style name="textShadowOverlayWhite">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:shadowColor">#ffffff</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowDx">5</item>
+        <item name="android:shadowDy">5</item>
+        <item name="android:shadowRadius">23</item>
+    </style>
+
     <style name="tab.layout.appearance" parent="Theme.MaterialComponents">
         <item name="tabSelectedTextColor">@color/lightGreen</item>
         <item name="tabInlineLabel">true</item>

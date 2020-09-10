@@ -9,8 +9,7 @@ import com.lukaszgalinski.gamefuture.view.VideoFragmentActivity
 
 private const val PAGES_COUNT = 3
 class FragmentsAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter(fragmentActivity) {
-    override fun getItemCount() =
-        PAGES_COUNT
+    override fun getItemCount() = PAGES_COUNT
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {

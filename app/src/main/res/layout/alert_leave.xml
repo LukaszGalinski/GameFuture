@@ -15,7 +15,7 @@
         android:layout_height="50dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/app_logo"
-        android:src="@drawable/logo"
+        android:src="@drawable/logo_ap"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

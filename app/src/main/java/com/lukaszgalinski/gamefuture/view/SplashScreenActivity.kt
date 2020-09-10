@@ -3,6 +3,7 @@ package com.lukaszgalinski.gamefuture.view
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.lukaszgalinski.gamefuture.R
@@ -10,7 +11,7 @@ import kotlinx.android.synthetic.main.splash_screen.*
 import java.util.*
 
 private const val SPLASH_SCREEN_DEFAULT_TIME = 3000L
-private val screenChangeHandler = Handler()
+private val screenChangeHandler = Handler(Looper.getMainLooper())
 private var timeLeft: Long = 0
 private var startTime: Long = 0
 private var TIME_LEFT_LABEL = "splashTime"

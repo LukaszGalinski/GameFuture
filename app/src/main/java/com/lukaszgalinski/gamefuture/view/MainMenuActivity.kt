@@ -5,6 +5,7 @@ import android.content.*
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -93,6 +94,10 @@ class MainMenuActivity: SearchActivity() {
         imageView.clipToOutline = true
         val title = dialog.findViewById<TextView>(R.id.alert_title)
         title.text = item.name
+        val description = dialog.findViewById<TextView>(R.id.alert_description)
+        description.text = item.description
+        description.movementMethod = ScrollingMovementMethod()
+
         val moveForwardButton = dialog.findViewById<Button>(R.id.alert_move_forward)
 
         moveForwardButton.setOnClickListener {

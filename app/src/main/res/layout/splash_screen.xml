@@ -9,7 +9,7 @@
         android:id="@+id/splash_logo"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/logo"
+        android:src="@drawable/logo_ap"
         android:alpha="0.8"
         android:contentDescription="@string/app_logo"
         app:layout_constraintWidth_percent="0.5"

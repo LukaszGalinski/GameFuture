@@ -16,14 +16,12 @@ import com.lukaszgalinski.gamefuture.R
 import com.lukaszgalinski.gamefuture.view.adapters.FragmentsAdapter
 import com.lukaszgalinski.gamefuture.view.adapters.GallerySliderAdapter
 import com.lukaszgalinski.gamefuture.viewmodels.GameDetailsViewModel
-import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.game_details_layout.*
 import kotlin.math.abs
 
 private const val GAME_ID_LABEL = "gameIdLabel"
@@ -32,7 +30,7 @@ private const val UNSELECTED_IMAGE_SCALE_HEIGHT = .25f
 private const val MARGIN_PAGE_TRANSFORMER_VALUE = 20
 private const val UNSELECTED_IMAGE_ALPHA = .3f
 private const val SELECTED_IMAGE_ALPHA = 1f
-private lateinit var cardsPager: ViewPager2
+lateinit var cardsPager: ViewPager2
 private lateinit var cardsToolbar: TabLayout
 private lateinit var galleryPager: ViewPager2
 private lateinit var galleryToolbar: TabLayout
@@ -51,6 +49,8 @@ class GameDetailsActivity : FragmentActivity() {
         buildGallery()
         gameDetailsViewModel = ViewModelProvider(this).get(GameDetailsViewModel::class.java)
         loadSingleData(gameId!!)
+        val tab = tabGallery.getTabAt(0)
+        tab!!.select()
     }
 
     private fun loadSingleData(gameId: Int){
@@ -64,12 +64,8 @@ class GameDetailsActivity : FragmentActivity() {
     }
 
     private fun buildGallery() {
-        galleryToolbar = findViewById(
-            R.id.tabGallery
-        )
-        galleryPager = findViewById(
-            R.id.gallery
-        )
+        galleryToolbar = findViewById(R.id.tabGallery)
+        galleryPager = findViewById(R.id.gallery)
         //load data from the database - to be done
         val galleryImagesList = arrayListOf(R.drawable.acoddysey, R.drawable.acwallhalla, R.drawable.cabal)
         val galleryAdapter = GallerySliderAdapter(this, galleryImagesList)
