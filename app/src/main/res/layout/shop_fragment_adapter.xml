@@ -4,7 +4,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="15dp">
+    app:cardCornerRadius="15dp"
+    app:cardBackgroundColor="@android:color/transparent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
@@ -13,11 +14,11 @@
         <ImageView
             android:id="@+id/shop_logo"
             android:layout_width="0dp"
-            android:layout_height="150dp"
+            android:layout_height="100dp"
             android:scaleType="centerCrop"
             android:background="@drawable/cabal"
             android:contentDescription="@string/shop_logo"
-            app:layout_constraintWidth_percent=".5"
+            app:layout_constraintWidth_percent=".3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
