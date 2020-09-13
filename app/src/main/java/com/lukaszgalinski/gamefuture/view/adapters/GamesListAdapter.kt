@@ -14,7 +14,7 @@ import com.lukaszgalinski.gamefuture.utilities.decodeImage
 import com.lukaszgalinski.gamefuture.view.callbacks.GameClickListener
 import kotlinx.android.synthetic.main.menu_list_row.view.*
 
-class GamesListAdapter(val context: Context) : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>() {
+class GamesListAdapter(private val context: Context) : RecyclerView.Adapter<GamesListAdapter.GamesViewHolder>() {
     private lateinit var gameClickListener: GameClickListener
 
     var games : List<GamesModel> = arrayListOf()

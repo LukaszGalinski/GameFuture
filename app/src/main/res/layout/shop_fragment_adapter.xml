@@ -8,36 +8,43 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@color/black_t">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/shop_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
             android:background="@drawable/cabal"
             android:contentDescription="@string/shop_logo"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent=".5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/shop_item_price"
-            style="@style/textShadowOverlay"
+            android:id="@+id/textView4"
+            style="@style/textShadowOverlayWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="cena: 29,99 zł"
             android:padding="@dimen/menu_recycler_text_padding"
-            app:layout_constraintStart_toStartOf="@id/shop_logo"
-            app:layout_constraintTop_toBottomOf="@id/shop_logo"
-            app:layout_constraintEnd_toEndOf="@id/shop_logo"/>
+            android:text="@string/price"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/shop_logo"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:layout_width="60dp"
-            android:layout_height="30dp"
+        <TextView
+            android:id="@+id/shop_item_price"
+            style="@style/textShadowOverlayWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/menu_recycler_text_padding"
+            android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/shop_logo" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/shop_logo"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <View
             android:id="@+id/bottomNavigationShadow"
