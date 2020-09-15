@@ -1,74 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
-    app:cardElevation="@dimen/menu_recycler_elevation"
-    app:cardCornerRadius="@dimen/menu_recycler_radius"
-    app:cardBackgroundColor="@color/quarterTransparent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent">
+        android:background="@android:color/transparent"
+        app:cardElevation="@dimen/menu_recycler_elevation"
+        app:cardCornerRadius="@dimen/menu_recycler_radius"
+        app:cardBackgroundColor="@color/quarterTransparent">
 
-        <ImageView
-            android:id="@+id/row_image"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/menu_recycler_image_height"
-            android:background="@drawable/border"
-            android:contentDescription="@string/game_image"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds="true"
-            app:layout_constraintWidth_percent="0.5"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-        <TextView
-            android:id="@+id/alert_title"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/alert_tittle"
-            android:padding="@dimen/menu_recycler_text_padding"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/alert_title_text_size"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/row_image"
-            app:layout_constraintTop_toTopOf="@+id/row_image"
-            app:layout_constraintWidth_percent="0.45" />
+            android:background="@android:color/transparent">
 
-        <TextView
-            android:id="@+id/alert_description"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/menu_default_margin"
-            android:text="@string/alert_description"
-            android:padding="@dimen/menu_recycler_text_padding"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/menu_recycler_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/row_image"
-            app:layout_constraintTop_toBottomOf="@+id/alert_title"
-            app:layout_constraintWidth_percent="0.47"
-            app:layout_constraintHeight_percent="0.6"/>
+            <ImageView
+                android:id="@+id/row_image"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/menu_recycler_image_height"
+                android:background="@drawable/border"
+                android:contentDescription="@string/game_image"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                app:layout_constraintWidth_percent="0.5"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/alert_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/alert_tittle"
+                android:padding="@dimen/menu_recycler_text_padding"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/alert_title_text_size"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/row_image"
+                app:layout_constraintTop_toTopOf="@+id/row_image"
+                app:layout_constraintWidth_percent="0.45" />
+
+            <TextView
+                android:id="@+id/alert_description"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/menu_default_margin"
+                android:text="@string/alert_description"
+                android:padding="@dimen/menu_recycler_text_padding"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/menu_recycler_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/row_image"
+                app:layout_constraintTop_toBottomOf="@+id/alert_title"
+                app:layout_constraintWidth_percent="0.47"
+                app:layout_constraintHeight_percent="0.6" />
 
 
-        <Button
-            android:id="@+id/alert_move_forward"
-            style="@style/textShadowOverlay"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/alert_move_forward"
-            android:background="@drawable/button_radius_green"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.15"
-            app:layout_constraintTop_toBottomOf="@+id/alert_description"
-            app:layout_constraintWidth_percent="0.3" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+            <Button
+                android:id="@+id/alert_move_forward"
+                style="@style/textShadowOverlay"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="10dp"
+                android:text="@string/alert_move_forward"
+                android:background="@drawable/button_radius_green"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.15"
+                app:layout_constraintTop_toBottomOf="@+id/alert_description"
+                app:layout_constraintWidth_percent="0.3" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

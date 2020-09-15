@@ -1,53 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <EditText
-        android:id="@+id/menuSearchBar"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/search_bar_height"
-        android:autofillHints="@string/search_for_a_game"
-        android:background="@drawable/search_bar_rounded"
-        android:drawableStart="@drawable/search_icon"
-        android:drawablePadding="@dimen/menu_edit_text_drawable_padding"
-        android:hint="@string/search_for_a_game"
-        android:inputType="text"
-        android:lines="1"
-        android:paddingStart="@dimen/menu_edit_text_padding"
-        android:paddingEnd="@dimen/menu_edit_text_padding"
-        android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.8" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/menu_recycler"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/menu_default_margin"
-        android:background="@android:color/transparent"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintHeight_percent=".84"
-        app:layout_constraintTop_toBottomOf="@id/menuSearchBar"
-        app:spanCount="2" />
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/games_progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/menu_recycler"
-        app:layout_constraintEnd_toEndOf="@id/menu_recycler"
-        app:layout_constraintStart_toStartOf="@id/menu_recycler"
-        app:layout_constraintTop_toBottomOf="@+id/menuSearchBar" />
+        <EditText
+            android:id="@+id/menuSearchBar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/search_bar_height"
+            android:autofillHints="@string/search_for_a_game"
+            android:background="@drawable/search_bar_rounded"
+            android:drawableStart="@drawable/search_icon"
+            android:drawablePadding="@dimen/menu_edit_text_drawable_padding"
+            android:hint="@string/search_for_a_game"
+            android:inputType="text"
+            android:lines="1"
+            android:paddingStart="@dimen/menu_edit_text_padding"
+            android:paddingEnd="@dimen/menu_edit_text_padding"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.8" />
 
-<include
-    android:id="@+id/navigation_bar"
-    layout="@layout/navigation_bar_bottom"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/menu_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/menu_default_margin"
+            android:background="@android:color/transparent"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintHeight_percent=".84"
+            app:layout_constraintTop_toBottomOf="@id/menuSearchBar"
+            app:spanCount="2" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:id="@+id/games_progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/menu_recycler"
+            app:layout_constraintEnd_toEndOf="@id/menu_recycler"
+            app:layout_constraintStart_toStartOf="@id/menu_recycler"
+            app:layout_constraintTop_toBottomOf="@+id/menuSearchBar" />
+
+        <include
+            android:id="@+id/navigation_bar"
+            layout="@layout/navigation_bar_bottom" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

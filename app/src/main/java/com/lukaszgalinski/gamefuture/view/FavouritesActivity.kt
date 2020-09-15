@@ -18,6 +18,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lukaszgalinski.gamefuture.view.callbacks.GameClickListener
 import com.lukaszgalinski.gamefuture.view.adapters.GamesListAdapter
 import com.lukaszgalinski.gamefuture.R
+import com.lukaszgalinski.gamefuture.databinding.AlertLeaveBinding
+import com.lukaszgalinski.gamefuture.databinding.FavouritesLayoutBinding
 import com.lukaszgalinski.gamefuture.models.GamesModel
 import com.lukaszgalinski.gamefuture.viewmodels.FavouritesViewModel
 import io.reactivex.Observable
@@ -33,30 +35,35 @@ private const val BROADCAST_PASS_STATUS = "passStatus"
 private const val GAME_ID_LABEL = "gameIdLabel"
 private const val ROOM_TAG = "Room: "
 
-class FavouritesActivity: AppCompatActivity() {
+class FavouritesActivity : AppCompatActivity() {
     private lateinit var favouritesCompositeDisposable: CompositeDisposable
     private lateinit var favouritesAdapter: GamesListAdapter
     private lateinit var favouritesViewModel: FavouritesViewModel
     private lateinit var localBroadcastManager: LocalBroadcastManager
     private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var bindingFavourites: FavouritesLayoutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.favourites_layout)
         favouritesCompositeDisposable = CompositeDisposable()
-        localBroadcastManager = LocalBroadcastManager.getInstance(this)
-        favouritesViewModel = ViewModelProvider(this).get(FavouritesViewModel::class.java)
-        loadFavouriteGames()
-
-        favouritesViewModel.getGames()?.observe(this, Observer<List<GamesModel>>{
-            favouritesAdapter.games = it
-        })
+        bindingFavourites = FavouritesLayoutBinding.inflate(layoutInflater)
+        setContentView(bindingFavourites.root)
+        buildViewModel()
         buildRecyclerView()
         loadFavouriteGames()
         buildBottomNavigationBar()
     }
 
-    private fun buildRecyclerView(){
+    private fun buildViewModel() {
+        localBroadcastManager = LocalBroadcastManager.getInstance(this)
+        favouritesViewModel = ViewModelProvider(this).get(FavouritesViewModel::class.java)
+        loadFavouriteGames()
+        favouritesViewModel.getGames()?.observe(this, Observer<List<GamesModel>> {
+            favouritesAdapter.games = it
+        })
+    }
+
+    private fun buildRecyclerView() {
         favouritesAdapter = GamesListAdapter(this)
         favourites_list.adapter = favouritesAdapter
         favouritesAdapter.setOnItemClickListener(object : GameClickListener {
@@ -68,7 +75,7 @@ class FavouritesActivity: AppCompatActivity() {
                 startActivity(intent)
             }
 
-            override fun onFavouriteClick(gameId: Int, status: Boolean, position: Int ) {
+            override fun onFavouriteClick(gameId: Int, status: Boolean, position: Int) {
                 sendBroadCastWithId(gameId, status)
                 val changeStatusDisposable = favouritesViewModel.changeStatus(this@FavouritesActivity, gameId, status, position)
                 changeStatusDisposable?.addTo(favouritesCompositeDisposable)
@@ -76,42 +83,35 @@ class FavouritesActivity: AppCompatActivity() {
         })
     }
 
-    private fun loadFavouriteGames(){
-        val favouritesObservable = Observable.fromCallable {
-            favouritesViewModel.init(this)
-        }
-        val disposable = favouritesObservable
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext{showProgressBar()}
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{
+    private fun loadFavouriteGames() {
+        val favouritesObservable = Observable.fromCallable { favouritesViewModel.init(this) }
+        val disposable = favouritesObservable.observeOn(AndroidSchedulers.mainThread()).doOnNext { showProgressBar() }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe {
                 hideProgressBar()
                 showData()
             }
         disposable.addTo(favouritesCompositeDisposable)
     }
 
-    private fun sendBroadCastWithId(gameId: Int, status: Boolean){
+    private fun sendBroadCastWithId(gameId: Int, status: Boolean) {
         val broadCastIntent = Intent(FAVOURITES_CHANGED_BROADCAST)
         broadCastIntent.putExtra(BROADCAST_PASS_ID, gameId)
         broadCastIntent.putExtra(BROADCAST_PASS_STATUS, status)
         localBroadcastManager.sendBroadcast(broadCastIntent)
     }
 
-    private fun showData(){
+    private fun showData() {
         val favouriteData = favouritesViewModel.getGames()?.value!!
-        if (favouriteData.isEmpty()){
+        if (favouriteData.isEmpty()) {
             showMessage()
         }
         favouritesAdapter.games = favouriteData
     }
 
-    private fun buildBottomNavigationBar(){
-        val parent: View = findViewById(R.id.navigation_bar)
-        bottomNavigationView = parent.findViewById(R.id.bottom_navigation)
+    private fun buildBottomNavigationBar() {
+        bottomNavigationView = bindingFavourites.navigationBar.bottomNavigation
         bottomNavigationView.selectedItemId = R.id.favourites_btn
-        bottomNavigationView.setOnNavigationItemSelectedListener{
+        bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home_btn -> {
                     finish()
@@ -119,7 +119,8 @@ class FavouritesActivity: AppCompatActivity() {
                 R.id.update_btn -> {
                     forceDataUpdating()
                 }
-                R.id.favourites_btn -> {}
+                R.id.favourites_btn -> {
+                }
                 R.id.exit_btn -> {
                     showConfirmationAlert()
                 }
@@ -128,19 +129,16 @@ class FavouritesActivity: AppCompatActivity() {
         }
     }
 
-    private fun showConfirmationAlert(){
+    private fun showConfirmationAlert() {
+        val alertBinding = AlertLeaveBinding.inflate(layoutInflater)
         val alert = Dialog(this)
-        alert.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        alert.setCanceledOnTouchOutside(true)
-        alert.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        alert.setContentView(R.layout.alert_leave)
-        val positiveButton = alert.findViewById<Button>(R.id.confirm)
-        val negativeButton = alert.findViewById<Button>(R.id.cancel)
-        positiveButton.setOnClickListener{
+        setAlertFeatures(alert)
+        alert.setContentView(alertBinding.root)
+        alertBinding.confirm.setOnClickListener {
             alert.dismiss()
             finishAffinity()
         }
-        negativeButton.setOnClickListener {
+        alertBinding.cancel.setOnClickListener {
             alert.dismiss()
             bottomNavigationView.selectedItemId = R.id.favourites_btn
         }
@@ -148,32 +146,34 @@ class FavouritesActivity: AppCompatActivity() {
         alert.show()
     }
 
-    private fun forceDataUpdating(){
+    private fun setAlertFeatures(alert: Dialog) {
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        alert.setCanceledOnTouchOutside(true)
+        alert.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    private fun forceDataUpdating() {
         showProgressBar()
         Toast.makeText(this, resources.getString(R.string.data_updating), Toast.LENGTH_SHORT).show()
-        val forceUpdateDisposable = Observable.fromCallable { favouritesViewModel.forceDataUpdating(this) }
-            .subscribeOn(Schedulers.io())
-            .doOnError { Log.w(ROOM_TAG,": " + "inserted") }
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnComplete{
+        val forceUpdateDisposable = Observable.fromCallable { favouritesViewModel.forceDataUpdating(this) }.subscribeOn(Schedulers.io())
+            .doOnError { Log.w(ROOM_TAG, ": " + "inserted") }.observeOn(AndroidSchedulers.mainThread()).doOnComplete {
                 bottomNavigationView.selectedItemId = R.id.home_btn
                 hideProgressBar()
                 Toast.makeText(this, resources.getString(R.string.data_updating_done), Toast.LENGTH_SHORT).show()
-            }
-            .subscribe()
+            }.subscribe()
         favouritesCompositeDisposable.add(forceUpdateDisposable)
     }
 
-    private fun showProgressBar(){
-        favourites_pb.visibility = View.VISIBLE
+    private fun showProgressBar() {
+        bindingFavourites.favouritesPb.visibility = View.VISIBLE
     }
 
-    private fun hideProgressBar(){
-        favourites_pb.visibility = View.GONE
+    private fun hideProgressBar() {
+        bindingFavourites.favouritesPb.visibility = View.GONE
     }
 
-    private fun showMessage(){
-        favourite_message.visibility = View.VISIBLE
+    private fun showMessage() {
+        bindingFavourites.favouriteMessage.visibility = View.VISIBLE
     }
 
     override fun onPause() {

@@ -13,6 +13,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lukaszgalinski.gamefuture.R
+import com.lukaszgalinski.gamefuture.databinding.GameDetailsLayoutBinding
 import com.lukaszgalinski.gamefuture.view.adapters.FragmentsAdapter
 import com.lukaszgalinski.gamefuture.view.adapters.GallerySliderAdapter
 import com.lukaszgalinski.gamefuture.viewmodels.GameDetailsViewModel
@@ -22,6 +23,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.game_details_layout.*
+import kotlinx.android.synthetic.main.video_fragment_layout.*
 import kotlin.math.abs
 
 private const val GAME_ID_LABEL = "gameIdLabel"
@@ -35,15 +37,17 @@ private lateinit var cardsToolbar: TabLayout
 private lateinit var galleryPager: ViewPager2
 private lateinit var galleryToolbar: TabLayout
 private lateinit var fragmentsAdapter: FragmentsAdapter
+lateinit var detailsBinding: GameDetailsLayoutBinding
 
 class GameDetailsActivity : FragmentActivity() {
-    private lateinit var gameDetailsViewModel : GameDetailsViewModel
+    private lateinit var gameDetailsViewModel: GameDetailsViewModel
     private val galleryMaxVisibleElements = 3
     private val compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.game_details_layout)
+        detailsBinding = GameDetailsLayoutBinding.inflate(layoutInflater)
+        setContentView(detailsBinding.root)
         val gameId = intent.extras?.getInt(GAME_ID_LABEL)
         buildFragmentCards()
         buildGallery()
@@ -53,19 +57,16 @@ class GameDetailsActivity : FragmentActivity() {
         tab!!.select()
     }
 
-    private fun loadSingleData(gameId: Int){
+    private fun loadSingleData(gameId: Int) {
         val singleElementLoadingObservable: Disposable = Single.fromCallable {
             gameDetailsViewModel.instance(this, gameId)
-        }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe()
+        }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe()
         compositeDisposable.add(singleElementLoadingObservable)
     }
 
     private fun buildGallery() {
-        galleryToolbar = findViewById(R.id.tabGallery)
-        galleryPager = findViewById(R.id.gallery)
+        galleryToolbar = detailsBinding.tabGallery
+        galleryPager = detailsBinding.gallery
         //load data from the database - to be done
         val galleryImagesList = arrayListOf(R.drawable.acoddysey, R.drawable.acwallhalla, R.drawable.cabal)
         val galleryAdapter = GallerySliderAdapter(this, galleryImagesList)
@@ -77,8 +78,8 @@ class GameDetailsActivity : FragmentActivity() {
     }
 
     private fun buildFragmentCards() {
-        cardsPager = findViewById(R.id.games_viewPager)
-        cardsToolbar = findViewById(R.id.tabLayout)
+        cardsPager = detailsBinding.gamesViewPager
+        cardsToolbar = detailsBinding.tabLayout
         fragmentsAdapter = FragmentsAdapter(this)
         cardsPager.adapter = fragmentsAdapter
         TabLayoutMediator(cardsToolbar, cardsPager) { tab, position ->
@@ -100,6 +101,7 @@ class GameDetailsActivity : FragmentActivity() {
     }
 
     private fun buildGalleryToolbar(pager: ViewPager2, tabLayout: TabLayout, imagesArray: ArrayList<Int>) {
+       // val galleryBinding = GalleryLayoutBinding.inflate(layoutInflater)
         TabLayoutMediator(tabLayout, pager) { tab, position ->
             val customBackgroundLayout = View.inflate(this, R.layout.gallery_layout, null)
             val imageBackground = customBackgroundLayout.findViewById<ImageView>(R.id.screens_gallery)
@@ -136,5 +138,13 @@ class GameDetailsActivity : FragmentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         compositeDisposable.dispose()
+    }
+
+    override fun onBackPressed() {
+        if (youtube_player.isFullScreen()) {
+            youtube_player.exitFullScreen()
+        } else {
+            finish()
+        }
     }
 }

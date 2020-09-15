@@ -1,12 +1,13 @@
 package com.lukaszgalinski.gamefuture.view
 
+import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
-import com.lukaszgalinski.gamefuture.R
+import com.lukaszgalinski.gamefuture.databinding.MainMenuLayoutBinding
 import com.lukaszgalinski.gamefuture.models.GamesModel
 import com.lukaszgalinski.gamefuture.view.adapters.GamesListAdapter
 import com.lukaszgalinski.gamefuture.viewmodels.MainMenuViewModel
@@ -23,11 +24,13 @@ abstract class SearchActivity: AppCompatActivity() {
     private val compositeDisposable = CompositeDisposable()
     private lateinit var progressBar: ProgressBar
     protected lateinit var  gamesListAdapter : GamesListAdapter
+    protected lateinit var binding: MainMenuLayoutBinding
 
-    override fun onStart() {
-        super.onStart()
-        progressBar = findViewById(R.id.games_progressBar)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = MainMenuLayoutBinding.inflate(layoutInflater)
         createEditTextChangeDisposable()
+        setContentView(binding.root)
     }
 
     private fun createEditTextChangeDisposable(){
@@ -54,7 +57,7 @@ abstract class SearchActivity: AppCompatActivity() {
                     s?.toString()?.let { emitter.onNext(it) }
                 }
             }
-            menuSearchBar.addTextChangedListener(textChange)
+            binding.menuSearchBar.addTextChangedListener(textChange)
             emitter.setCancellable {
                 menuSearchBar.removeTextChangedListener(textChange)
             }
@@ -68,10 +71,10 @@ abstract class SearchActivity: AppCompatActivity() {
     }
 
     protected fun showProgressBar(){
-        progressBar.visibility = View.VISIBLE
+        binding.gamesProgressBar.visibility = View.VISIBLE
     }
 
     protected fun hideProgressBar(){
-        progressBar.visibility = View.GONE
+        binding.gamesProgressBar.visibility = View.GONE
     }
 }

@@ -1,81 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
-    android:layout_marginTop="@dimen/menu_default_margin">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/description_name"
-        style="@style/textShadowOverlayWhite"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="@dimen/menu_default_margin"
-        android:padding="5dp"
-        android:textSize="16sp"
-        android:text="Name: Sekiro: Shadows Die Twice"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@android:color/transparent"
+        android:layout_marginTop="@dimen/menu_default_margin">
 
-    <TextView
-        android:id="@+id/description_producer"
-        style="@style/textShadowOverlayWhite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="5dp"
-        android:text="Producent: FromSoftware"
-        app:layout_constraintStart_toStartOf="@id/description_name"
-        app:layout_constraintTop_toBottomOf="@id/description_name" />
+        <TextView
+            android:id="@+id/description_name"
+            style="@style/textShadowOverlayWhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="@dimen/menu_default_margin"
+            android:padding="5dp"
+            android:textSize="16sp"
+            tools:text="Name: Sekiro: Shadows Die Twice"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/description_category"
-        style="@style/textShadowOverlayWhite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="5dp"
-        android:text="Kategoria: bijatyka, akcji, RPG"
-        app:layout_constraintStart_toStartOf="@+id/description_producer"
-        app:layout_constraintTop_toBottomOf="@id/description_producer" />
+        <TextView
+            android:id="@+id/description_producer"
+            style="@style/textShadowOverlayWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            tools:text="Producent: FromSoftware"
+            app:layout_constraintStart_toStartOf="@id/description_name"
+            app:layout_constraintTop_toBottomOf="@id/description_name" />
 
-    <TextView
-        android:id="@+id/textView3"
-        style="@style/textShadowOverlayWhite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:text="Ocena: "
-        android:layout_marginTop="@dimen/menu_default_margin"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/description_category"
-        app:layout_constraintTop_toBottomOf="@+id/description_category" />
+        <TextView
+            android:id="@+id/description_category"
+            style="@style/textShadowOverlayWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            tools:text="Kategoria: bijatyka, akcji, RPG"
+            app:layout_constraintStart_toStartOf="@+id/description_producer"
+            app:layout_constraintTop_toBottomOf="@id/description_producer" />
 
-    <RatingBar
-        android:id="@+id/ratingBar"
-        style="?android:attr/ratingBarStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:isIndicator="true"
-        android:max="5"
-        android:rating="3"
-        app:layout_constraintBottom_toBottomOf="@+id/textView3"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toTopOf="@+id/textView3" />
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/textShadowOverlayWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            tools:text="Ocena: "
+            android:layout_marginTop="@dimen/menu_default_margin"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/description_category"
+            app:layout_constraintTop_toBottomOf="@+id/description_category" />
 
-    <TextView
-        android:id="@+id/description_premiere"
-        style="@style/textShadowOverlayWhite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="5dp"
-        android:text="Data premiery: 25 marca 2020"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/description_name"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isIndicator="true"
+            android:max="5"
+            android:rating="3"
+            app:layout_constraintBottom_toBottomOf="@+id/textView3"
+            app:layout_constraintStart_toEndOf="@+id/textView3"
+            app:layout_constraintTop_toTopOf="@+id/textView3" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/description_premiere"
+            style="@style/textShadowOverlayWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            tools:text="Data premiery: 25 marca 2020"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/description_name"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -26,7 +26,7 @@
 
     <string name="details_gallery">Gallery</string>
     <string name="no_results">No results matches</string>
-    <string name="details_description">Description</string>
+    <string name="details_description">Info</string>
     <string name="details_video">Video</string>
     <string name="details_shop">Shop</string>
     <string name="search_for_a_game">search for a game&#8230;</string>
