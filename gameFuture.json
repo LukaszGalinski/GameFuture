@@ -130,14 +130,14 @@
     "category": "przygodowe, FPP, TPP, fantasy, multiplayer",
     "description": "Wymykająca się próbom ścisłej klasyfikacji gatunkowej sandboksowa gra niezależnego studia Mojang AB. Minecraft zaprojektowano z myślą o kreatywności graczy, którzy mogą niemal dowolnie zmieniać zbudowany z voxeli (sześciennych bloków) wirtualny świat",
     "gameId": 7,
-    "photo": "minecraft/cover.jpg",
+    "photo": "Minecraft/cover.jpg",
     "premiere": "18.11.2011",
     "producer": "Mojang Studios",
     "rating": "8.0",
     "galleryLinks": [
-	  "minecraft/gallery_one.png",
-      "minecraft/gallery_two.jpg",
-      "minecraft/gallery_three.png"
+	  "Minecraft/gallery_one.png",
+      "Minecraft/gallery_two.jpg",
+      "Minecraft/gallery_three.png"
     ],
     "shopLinks": [
       "https://www.ultima.pl/ct/playstation-4/gry/role-playing-rpg/minecraft-pl-1",

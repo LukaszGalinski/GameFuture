@@ -51,7 +51,7 @@ class GamesListAdapter(private val context: Context) : RecyclerView.Adapter<Game
     override fun onBindViewHolder(holder: GamesViewHolder, position: Int) {
         val element = games[position]
         holder.name.text = element.name
-        Glide.with(context).load(SERVER_DATA_URL + games[position].photo+".jpg").into(holder.image)
+        Glide.with(context).load(SERVER_DATA_URL + games[position].photo).into(holder.image)
         holder.image.clipToOutline = true
         holder.favourite.isChecked = games[position].favourite
         holder.itemView.setOnClickListener {
