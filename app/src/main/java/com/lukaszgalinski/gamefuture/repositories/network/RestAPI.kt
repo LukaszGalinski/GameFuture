@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 interface RestAPI {
 
-    @GET("/LukaszGalinski/GameFuture/master/gameFuturee.json")
+    @GET("/LukaszGalinski/GameFuture/master/gameFuture.json")
     fun getGamesList(): Call<List<GamesModel>>
 }

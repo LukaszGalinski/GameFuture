@@ -6,25 +6,30 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.lukaszgalinski.gamefuture.R
+import com.lukaszgalinski.gamefuture.repositories.network.SERVER_DATA_URL
 
 private const val IMAGE_LABEL = "image"
-class GallerySlider: Fragment(){
+
+class GallerySlider : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.gallery_layout, container, false)
-        val word = arguments?.getInt(IMAGE_LABEL)
+        val word = arguments?.getString(IMAGE_LABEL)
         val currentImage = view.findViewById<ImageView>(R.id.screens_gallery)
-        currentImage.setImageResource(word ?: R.drawable.acoddysey)
+        Glide.with(requireContext())
+            .load("link: " + SERVER_DATA_URL + word)
+            .into(currentImage)
         currentImage.setBackgroundResource(R.drawable.border)
         currentImage.adjustViewBounds = true
         return view
     }
 
     companion object {
-        fun newInstance(image: Int): GallerySlider {
+        fun newInstance(image: String): GallerySlider {
             val args = Bundle()
-            args.putInt(IMAGE_LABEL, image)
+            args.putString(IMAGE_LABEL, image)
             val fragment = GallerySlider()
             fragment.arguments = args
             return fragment

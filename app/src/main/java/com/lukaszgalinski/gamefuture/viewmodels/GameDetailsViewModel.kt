@@ -26,7 +26,15 @@ class GameDetailsViewModel: ViewModel(){
 
     fun loadPrices(shopLinks: ShopPricesModel): List<String?>{
         return getShopPrices(shopLinks)
-
     }
 
+    fun getShopLinks(): ShopPricesModel?{
+        val shopLinks = chosenGame?.shopLinks
+        return shopLinks?.get(0)?.let { ShopPricesModel(it, shopLinks[1], shopLinks[2]) }
+    }
+
+    fun getGalleryImagesLinks(): List<String>?{
+        println(chosenGame)
+        return chosenGame?.galleryLinks
+    }
 }

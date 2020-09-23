@@ -11,7 +11,7 @@ import com.lukaszgalinski.gamefuture.repositories.DatabaseRepository
 import io.reactivex.disposables.Disposable
 
 private const val TIME_BETWEEN_FILTER_REFRESH = 1000L
-private const val DEFAULT_UPDATE_TIME = 7*24*60*60L
+
 class MainMenuViewModel : ViewModel(){
     private var gamesLiveData: MutableLiveData<List<GamesModel>>? = null
     private var mRepo: DatabaseRepository? = null

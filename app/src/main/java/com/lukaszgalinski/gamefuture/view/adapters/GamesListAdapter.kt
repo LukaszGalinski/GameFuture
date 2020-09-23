@@ -8,9 +8,10 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.lukaszgalinski.gamefuture.R
 import com.lukaszgalinski.gamefuture.models.GamesModel
-import com.lukaszgalinski.gamefuture.utilities.decodeImage
+import com.lukaszgalinski.gamefuture.repositories.network.SERVER_DATA_URL
 import com.lukaszgalinski.gamefuture.view.callbacks.GameClickListener
 import kotlinx.android.synthetic.main.menu_list_row.view.*
 
@@ -50,11 +51,7 @@ class GamesListAdapter(private val context: Context) : RecyclerView.Adapter<Game
     override fun onBindViewHolder(holder: GamesViewHolder, position: Int) {
         val element = games[position]
         holder.name.text = element.name
-        holder.image.setImageBitmap(
-            decodeImage(
-                element.photo
-            )
-        )
+        Glide.with(context).load(SERVER_DATA_URL + games[position].photo+".jpg").into(holder.image)
         holder.image.clipToOutline = true
         holder.favourite.isChecked = games[position].favourite
         holder.itemView.setOnClickListener {

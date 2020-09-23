@@ -86,8 +86,7 @@ class MainMenuActivity : SearchActivity() {
         dialog.setContentView(alertBinding.root)
         dialog.window?.setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
 
-
-        alertBinding.rowImage.setImageBitmap(decodeImage(item.photo))
+       // alertBinding.rowImage.setImageBitmap(decodeImage(item.photo))
         alertBinding.rowImage.clipToOutline = true
         alertBinding.alertTitle.text = item.name
         alertBinding.alertDescription.text = item.description

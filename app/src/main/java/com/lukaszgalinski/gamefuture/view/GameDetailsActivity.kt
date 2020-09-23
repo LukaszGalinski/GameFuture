@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lukaszgalinski.gamefuture.R
@@ -49,28 +50,34 @@ class GameDetailsActivity : FragmentActivity() {
         detailsBinding = GameDetailsLayoutBinding.inflate(layoutInflater)
         setContentView(detailsBinding.root)
         val gameId = intent.extras?.getInt(GAME_ID_LABEL)
+        println("zaladowane int: " + gameId)
         buildFragmentCards()
-        buildGallery()
         gameDetailsViewModel = ViewModelProvider(this).get(GameDetailsViewModel::class.java)
         loadSingleData(gameId!!)
-        val tab = tabGallery.getTabAt(0)
-        tab!!.select()
+
     }
 
     private fun loadSingleData(gameId: Int) {
         val singleElementLoadingObservable: Disposable = Single.fromCallable {
             gameDetailsViewModel.instance(this, gameId)
-        }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe()
+        }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+            .doOnSuccess {
+                buildGallery()
+                val tab = tabGallery.getTabAt(0)
+                tab!!.select()
+            }.subscribe()
         compositeDisposable.add(singleElementLoadingObservable)
     }
 
     private fun buildGallery() {
         galleryToolbar = detailsBinding.tabGallery
         galleryPager = detailsBinding.gallery
-        //load data from the database - to be done
-        val galleryImagesList = arrayListOf(R.drawable.acoddysey, R.drawable.acwallhalla, R.drawable.cabal)
-        val galleryAdapter = GallerySliderAdapter(this, galleryImagesList)
+        val galleryImagesList = gameDetailsViewModel.getGalleryImagesLinks()
+
+        println("gallery: " + galleryImagesList)
+        val galleryAdapter = GallerySliderAdapter(this, galleryImagesList!!)
         galleryPager.adapter = galleryAdapter
+        galleryAdapter.notifyDataSetChanged()
         createViewPagerAnimation(galleryPager)
         buildGalleryToolbar(
             galleryPager, galleryToolbar, galleryImagesList
@@ -100,12 +107,12 @@ class GameDetailsActivity : FragmentActivity() {
         }.attach()
     }
 
-    private fun buildGalleryToolbar(pager: ViewPager2, tabLayout: TabLayout, imagesArray: ArrayList<Int>) {
-       // val galleryBinding = GalleryLayoutBinding.inflate(layoutInflater)
+    private fun buildGalleryToolbar(pager: ViewPager2, tabLayout: TabLayout, imagesArray: List<String>) {
+        // val galleryBinding = GalleryLayoutBinding.inflate(layoutInflater)
         TabLayoutMediator(tabLayout, pager) { tab, position ->
             val customBackgroundLayout = View.inflate(this, R.layout.gallery_layout, null)
             val imageBackground = customBackgroundLayout.findViewById<ImageView>(R.id.screens_gallery)
-            imageBackground.setImageResource(imagesArray[position])
+            Glide.with(applicationContext).load("https://raw.githubusercontent.com/LukaszGalinski/GameFuture/master/appServerFiles/Sekiro/gallery_one.jpg").into(imageBackground)
             imageBackground.scaleType = ImageView.ScaleType.FIT_XY
             tab.view.alpha = UNSELECTED_IMAGE_ALPHA
             tab.customView = customBackgroundLayout

@@ -38,13 +38,8 @@ class ShopFragmentActivity : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val viewModelProvider = ViewModelProvider(requireActivity()).get(GameDetailsViewModel::class.java)
         buildShopsRecycler()
-        //hard coded to change on json loading
-        val shopLinks = ShopPricesModel(
-            "https://www.ultima.pl/ct/playstation-4/gry/role-playing-rpg/sekiro-shadows-die-twice-1",
-            "https://www.morele.net/sekiro-shadows-die-twice-4141985/?utm_source=ceneo&utm_medium=referral",
-            "https://www.e-key.eu/pl/sekiro-shadows-die-twice.html?utm_source=ceneo&utm_medium=referral"
-        )
-        loadTheData(viewModelProvider, shopLinks)
+        val shopLinks = viewModelProvider.getShopLinks()
+        loadTheData(viewModelProvider, shopLinks!!)
     }
 
     private fun buildShopsRecycler() {
