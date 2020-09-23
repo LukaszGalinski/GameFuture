@@ -23,7 +23,7 @@
 	{
       "name": "Assassin's Creed: Odyssey",
       "category": "RPG, TPP, skradanki",
-      "description": "W przeciwieństwie do poprzednich części serii, które były grami akcji, omawiana produkcja wykonała silny zwrot w stronę gatunku RPG, upodabniając się do gry Wiedźmin 3: Dziki Gon. Przemierzając antyczną Grecję, gracz m.in. podejmuje wybory moralne w misjach, odgrywa postać w interaktywnych dialogach i awansuje na kolejne poziomy doświadczenia"
+      "description": "W przeciwieństwie do poprzednich części serii, które były grami akcji, omawiana produkcja wykonała silny zwrot w stronę gatunku RPG, upodabniając się do gry Wiedźmin 3: Dziki Gon. Przemierzając antyczną Grecję, gracz m.in. podejmuje wybory moralne w misjach, odgrywa postać w interaktywnych dialogach i awansuje na kolejne poziomy doświadczenia",
       "gameId": 2,
       "photo": "ACOddysey/cover.jpg",
       "premiere": "05.10.2018",
@@ -44,7 +44,7 @@
 	{
       "name": "Wiedźmin 3: Dziki Gon",
       "category": "RPG, TPP, fantasy,",
-      "description": "W grze Wiedźmin 3: Dziki Gon ponownie wcielamy się w znanego z wcześniejszych odsłon wiedźmina. Główna oś fabularna obraca się wokół kilku oddzielnych wątków. Wśród nich znalazło się poszukiwanie utraconej miłości Geralta oraz inwazja Nilfgaardu na Królestwa Północy. Spróbujemy też powstrzymać tytułowy Dziki Gon, prześladujący wiedźmina zarówno w powieściach, jak i obecny w pierwszej i w nikłym stopniu w drugiej części serii. Wszystkie te główne zadania oferują filmową jakość opowiadanej historii, z rozgałęzionymi ścieżkami wydarzeń, imponującymi scenkami przerywnikowymi i starannie wyreżyserowanymi sekwencjami"
+      "description": "W grze Wiedźmin 3: Dziki Gon ponownie wcielamy się w znanego z wcześniejszych odsłon wiedźmina. Główna oś fabularna obraca się wokół kilku oddzielnych wątków. Wśród nich znalazło się poszukiwanie utraconej miłości Geralta oraz inwazja Nilfgaardu na Królestwa Północy. Spróbujemy też powstrzymać tytułowy Dziki Gon, prześladujący wiedźmina zarówno w powieściach, jak i obecny w pierwszej i w nikłym stopniu w drugiej części serii. Wszystkie te główne zadania oferują filmową jakość opowiadanej historii, z rozgałęzionymi ścieżkami wydarzeń, imponującymi scenkami przerywnikowymi i starannie wyreżyserowanymi sekwencjami",
       "gameId": 3,
       "photo": "Witcher3/cover.jpg",
       "premiere": "19.05.2015",
@@ -65,7 +65,7 @@
 	{
       "name": "Gothic 2: Gold Edition",
       "category": "RPG, TPP, fantasy, RPG akcji",
-      "description": "Podobnie jak w części poprzedniej akcja Gothic II toczy się w świecie fantasy i kontynuuje fabułę poprzedniczki, tj. wojny pomiędzy siłami zła (cała masa potworów, Orków i Ogrów pod przewodnictwem Smoków) i Ludźmi. Jednak tym razem nie poruszamy się już tylko wewnątrz kolonii przestępców objętej zasięgiem magicznej bariery, a na jej zewnątrz. Akcja toczy się w nowych bardzo rozległych i różnorodnych lokacjach, m.in. miasteczko nadmorskie, klasztor, biblioteka, farma, Wyspa Smoków, zamek oblężony przez Orki"
+      "description": "Podobnie jak w części poprzedniej akcja Gothic II toczy się w świecie fantasy i kontynuuje fabułę poprzedniczki, tj. wojny pomiędzy siłami zła (cała masa potworów, Orków i Ogrów pod przewodnictwem Smoków) i Ludźmi. Jednak tym razem nie poruszamy się już tylko wewnątrz kolonii przestępców objętej zasięgiem magicznej bariery, a na jej zewnątrz. Akcja toczy się w nowych bardzo rozległych i różnorodnych lokacjach, m.in. miasteczko nadmorskie, klasztor, biblioteka, farma, Wyspa Smoków, zamek oblężony przez Orki",
       "gameId": 4,
       "photo": "Gothic2/cover.jpg",
       "premiere": "29.11.2002",
@@ -86,7 +86,7 @@
 	{
       "name": "Horizon Zero Dawn: Complete Edition",
       "category": "Akcji, TPP, science fiction",
-      "description": "Akcja Horizon Zero Dawn rozgrywa się w czasach, gdy ludzkość najlepsze lata dawno ma za sobą. Cywilizacja upadła, a jednostki, które zdołały przetrwać, gromadzą się w plemiona zamieszkujące dzikie tereny nowego świata. Jednak nie wszystko na planecie cofnęło się w rozwoju – nadrzędną rolę w środowisku przejęły maszyny, które w niewyjaśnionych okolicznościach wyewoluowały w inteligentne „zwierzęta”. Gracz wciela się w Aloy – młodą, ciekawską i wojowniczą dziewczynę, która pragnie zgłębić tajemnice dawnej cywilizacji, jednocześnie starając się poznać własne przeznaczenie"
+      "description": "Akcja Horizon Zero Dawn rozgrywa się w czasach, gdy ludzkość najlepsze lata dawno ma za sobą. Cywilizacja upadła, a jednostki, które zdołały przetrwać, gromadzą się w plemiona zamieszkujące dzikie tereny nowego świata. Jednak nie wszystko na planecie cofnęło się w rozwoju – nadrzędną rolę w środowisku przejęły maszyny, które w niewyjaśnionych okolicznościach wyewoluowały w inteligentne „zwierzęta”. Gracz wciela się w Aloy – młodą, ciekawską i wojowniczą dziewczynę, która pragnie zgłębić tajemnice dawnej cywilizacji, jednocześnie starając się poznać własne przeznaczenie",
       "gameId": 5,
       "photo": "HorizonZD/cover.jpg",
       "premiere": "07.08.2020",
@@ -128,7 +128,7 @@
 	{
 	"name": "Minecraft",
     "category": "przygodowe, FPP, TPP, fantasy, multiplayer",
-    "description": "Wymykająca się próbom ścisłej klasyfikacji gatunkowej sandboksowa gra niezależnego studia Mojang AB. Minecraft zaprojektowano z myślą o kreatywności graczy, którzy mogą niemal dowolnie zmieniać zbudowany z voxeli (sześciennych bloków) wirtualny świat."
+    "description": "Wymykająca się próbom ścisłej klasyfikacji gatunkowej sandboksowa gra niezależnego studia Mojang AB. Minecraft zaprojektowano z myślą o kreatywności graczy, którzy mogą niemal dowolnie zmieniać zbudowany z voxeli (sześciennych bloków) wirtualny świat",
     "gameId": 7,
     "photo": "minecraft/cover.jpg",
     "premiere": "18.11.2011",
