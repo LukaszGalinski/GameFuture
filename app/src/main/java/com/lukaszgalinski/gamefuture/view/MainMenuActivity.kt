@@ -18,7 +18,7 @@ import com.lukaszgalinski.gamefuture.R
 import com.lukaszgalinski.gamefuture.databinding.AlertLeaveBinding
 import com.lukaszgalinski.gamefuture.databinding.MainMenuGameAlertBinding
 import com.lukaszgalinski.gamefuture.models.GamesModel
-import com.lukaszgalinski.gamefuture.utilities.decodeImage
+import com.lukaszgalinski.gamefuture.tools.ApplicationTools
 import com.lukaszgalinski.gamefuture.view.adapters.GamesListAdapter
 import com.lukaszgalinski.gamefuture.view.callbacks.GameClickListener
 import com.lukaszgalinski.gamefuture.viewmodels.MainMenuViewModel
@@ -85,8 +85,7 @@ class MainMenuActivity : SearchActivity() {
         setDialogFeatures(dialog)
         dialog.setContentView(alertBinding.root)
         dialog.window?.setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
-
-       // alertBinding.rowImage.setImageBitmap(decodeImage(item.photo))
+        ApplicationTools().loadImageIntoImageView(this, alertBinding.rowImage, item.photo)
         alertBinding.rowImage.clipToOutline = true
         alertBinding.alertTitle.text = item.name
         alertBinding.alertDescription.text = item.description

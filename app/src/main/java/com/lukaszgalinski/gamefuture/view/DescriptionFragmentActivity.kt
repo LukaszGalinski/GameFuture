@@ -28,5 +28,9 @@ class DescriptionFragmentActivity : Fragment() {
         val gameDetailsViewModel = ViewModelProvider(requireActivity()).get(GameDetailsViewModel::class.java)
         val gameItem = gameDetailsViewModel.getData()
         descriptionBinding.descriptionName.text = gameItem?.name
+        descriptionBinding.descriptionCategory.text = gameItem?.category
+        descriptionBinding.descriptionPremiere.text = gameItem?.premiere
+        descriptionBinding.descriptionProducer.text = gameItem?.producer
+        descriptionBinding.ratingBar.rating = gameItem?.rating?.toFloat() ?: 0f
     }
 }

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:id="@+id/scrollable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rootView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabGallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/transparent"
+                    android:elevation="15dp"
+                    android:theme="@style/tab.layout.appearance"
+                    app:layout_constraintHeight_percent=".07"
+                    app:layout_constraintTop_toBottomOf="@id/gallery"
+                    app:tabGravity="center"
+                    app:tabIndicator="@android:color/transparent"
+                    app:tabMode="scrollable"
+                    app:tabPaddingEnd="5dp"
+                    app:tabPaddingStart="5dp" />
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/gallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/transparent"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:contentDescription="@string/details_gallery"
+                    android:overScrollMode="never"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="40dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_percent=".3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/fragmentBlackTransparent"
+                    android:elevation="15dp"
+                    android:theme="@style/tab.layout.appearance"
+                    app:layout_constraintTop_toBottomOf="@id/tabGallery"
+                    app:tabMode="fixed" />
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/games_viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:background="@color/fragmentBlackTransparent"
+                    app:layout_constraintHeight_percent="0.55"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+</layout>

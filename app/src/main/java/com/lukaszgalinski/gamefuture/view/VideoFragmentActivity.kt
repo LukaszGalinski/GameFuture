@@ -17,7 +17,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerFullScreenListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
-private const val YOUTUBE_VIDEO_ID = "FLjuoF5Si1U"
 
 class VideoFragmentActivity : Fragment() {
     lateinit var youTubePlayer: YouTubePlayerView
@@ -38,7 +37,7 @@ class VideoFragmentActivity : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val gameDetailsViewModel = ViewModelProvider(requireActivity()).get(GameDetailsViewModel::class.java)
         val gameItem = gameDetailsViewModel.getData()
-        buildYouTubeVideo(YOUTUBE_VIDEO_ID)
+        buildYouTubeVideo(gameItem?.videoId!!)
     }
 
     private fun buildYouTubeVideo(videoURL: String) {

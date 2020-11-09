@@ -15,6 +15,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lukaszgalinski.gamefuture.R
 import com.lukaszgalinski.gamefuture.databinding.GameDetailsLayoutBinding
+import com.lukaszgalinski.gamefuture.repositories.network.SERVER_DATA_URL
+import com.lukaszgalinski.gamefuture.tools.ApplicationTools
 import com.lukaszgalinski.gamefuture.view.adapters.FragmentsAdapter
 import com.lukaszgalinski.gamefuture.view.adapters.GallerySliderAdapter
 import com.lukaszgalinski.gamefuture.viewmodels.GameDetailsViewModel
@@ -50,7 +52,6 @@ class GameDetailsActivity : FragmentActivity() {
         detailsBinding = GameDetailsLayoutBinding.inflate(layoutInflater)
         setContentView(detailsBinding.root)
         val gameId = intent.extras?.getInt(GAME_ID_LABEL)
-        println("zaladowane int: " + gameId)
         buildFragmentCards()
         gameDetailsViewModel = ViewModelProvider(this).get(GameDetailsViewModel::class.java)
         loadSingleData(gameId!!)
@@ -73,8 +74,6 @@ class GameDetailsActivity : FragmentActivity() {
         galleryToolbar = detailsBinding.tabGallery
         galleryPager = detailsBinding.gallery
         val galleryImagesList = gameDetailsViewModel.getGalleryImagesLinks()
-
-        println("gallery: " + galleryImagesList)
         val galleryAdapter = GallerySliderAdapter(this, galleryImagesList!!)
         galleryPager.adapter = galleryAdapter
         galleryAdapter.notifyDataSetChanged()
@@ -108,11 +107,9 @@ class GameDetailsActivity : FragmentActivity() {
     }
 
     private fun buildGalleryToolbar(pager: ViewPager2, tabLayout: TabLayout, imagesArray: List<String>) {
-        // val galleryBinding = GalleryLayoutBinding.inflate(layoutInflater)
         TabLayoutMediator(tabLayout, pager) { tab, position ->
             val customBackgroundLayout = View.inflate(this, R.layout.gallery_layout, null)
             val imageBackground = customBackgroundLayout.findViewById<ImageView>(R.id.screens_gallery)
-            Glide.with(applicationContext).load("https://raw.githubusercontent.com/LukaszGalinski/GameFuture/master/appServerFiles/Sekiro/gallery_one.jpg").into(imageBackground)
             imageBackground.scaleType = ImageView.ScaleType.FIT_XY
             tab.view.alpha = UNSELECTED_IMAGE_ALPHA
             tab.customView = customBackgroundLayout
@@ -148,6 +145,7 @@ class GameDetailsActivity : FragmentActivity() {
     }
 
     override fun onBackPressed() {
+
         if (youtube_player.isFullScreen()) {
             youtube_player.exitFullScreen()
         } else {

@@ -19,7 +19,7 @@ class GallerySlider : Fragment() {
         val word = arguments?.getString(IMAGE_LABEL)
         val currentImage = view.findViewById<ImageView>(R.id.screens_gallery)
         Glide.with(requireContext())
-            .load("link: " + SERVER_DATA_URL + word)
+            .load(SERVER_DATA_URL + word)
             .into(currentImage)
         currentImage.setBackgroundResource(R.drawable.border)
         currentImage.adjustViewBounds = true
